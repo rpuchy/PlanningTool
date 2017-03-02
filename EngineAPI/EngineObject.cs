@@ -263,7 +263,7 @@ namespace EngineAPI
             }
             catch(Exception e)
             {
-
+                throw new Exception(e.Message);
             }
             return templist;
         }

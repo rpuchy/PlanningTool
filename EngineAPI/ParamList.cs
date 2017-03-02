@@ -26,7 +26,7 @@ namespace EngineAPI
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Parameter : ");
+                    throw new Exception("Parameter : " + e.Message);
                 }                
             }
         }

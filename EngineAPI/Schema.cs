@@ -100,7 +100,6 @@ namespace EngineAPI
                 candidates = _innerxml.SelectNodes(xPath);
             }
             //Now evaluate the depends and pick the correct model
-            bool usemodel = false;
             foreach (XmlNode candidate in candidates)
             {
                 if (candidate.Attributes[Schema.depends] != null)

@@ -17,7 +17,6 @@ namespace PlanningTool
         readonly EngineObject _engineObject;
         readonly EngineObjectViewModel _parent;
 
-        private string _nodeName;
 
         bool _isExpanded;
         bool _isSelected;

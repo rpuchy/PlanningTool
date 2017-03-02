@@ -364,34 +364,79 @@ namespace EngineAPI
             return Schema.GetValueTypesfromXml(Params);
         }
 
-        protected void AddQuery(string ValueType)
+        public EngineObject AddQuery(string ValueType)
         {
-            throw new NotImplementedException();
+            List<string> t = new List<string>();
+            t.Add(ValueType);
+            return AddQuery(t);
         }
 
-        protected void AddOperator(string Query,string OperatorType)
+
+        public EngineObject AddQuery(List<string> ValueTypes)
         {
-            throw new NotImplementedException();
+            EngineObject Queries = new EngineObject(_innerXml.SelectSingleNode("//Queries"), _schema);
+            var Query = Queries.AddObject("Query");
+            Query.Parameters["QueryID"].Value = 'q' + this.FullyQualifiedName.Replace('.', '|') + '|' + String.Join("|",ValueTypes.ToArray());
+            if (this.Name == "Model")
+            {
+                var QueryFilter = Query.FindObjectbyNodeName("QueryFilter");
+                QueryFilter.Parameters["ObjectName"].Value = "model";
+                var QueryFilterCriteria = QueryFilter.FindObjectbyNodeName("QueryFilterCriteria");
+                QueryFilterCriteria.Parameters["Field"].Value = "ModelID";
+                QueryFilterCriteria.Parameters["Value"].Value = Parameters["ModelID"].Value;
+            }
+            if (this.Name=="Product")
+            {
+                var QueryFilter = Query.FindObjectbyNodeName("QueryFilter");
+                QueryFilter.Parameters["ObjectName"].Value = "product";
+                var QueryFilterCriteria = QueryFilter.FindObjectbyNodeName("QueryFilterCriteria");
+                QueryFilterCriteria.Parameters["Field"].Value = "Name";
+                QueryFilterCriteria.Parameters["Value"].Value = this.ObjectName;
+                var QueryFilter2 = QueryFilter.Parent.AddObject("QueryFilter");
+                QueryFilter2.Parameters["ObjectName"].Value = "tax_wrapper";
+                var QueryFilter2Criteria = QueryFilter2.FindObjectbyNodeName("QueryFilterCriteria");
+                QueryFilter2Criteria.Parameters["Field"].Value = "Name";
+                QueryFilter2Criteria.Parameters["Value"].Value = this.Parent.Parent.Parameters["Name"].Value;
+
+            }
+            var Values = Query.FindObjectbyNodeName("Values");
+            Values.Parameters["Value"].Value = ValueTypes[0];
+            if (ValueTypes.Count>1)
+            {
+                for (int i=1;i<ValueTypes.Count;i++)
+                {
+                    Values.AddParameter("Value",ValueTypes[i]);
+                }
+            }
+            return Query;
+        }
+
+        protected EngineObject AddOperator(EngineObject Query, string ValueType, string OperatorType)
+        {
+            EngineObject Operators = new EngineObject(_innerXml.SelectSingleNode("//Operators"), _schema);
+
+            var Operator = Operators.AddObject("Operator");
+            Operator.Parameters["OperatorID"].Value = 'o' + this.FullyQualifiedName.Replace('.', '|') + '|' + ValueType;
+            var OperationApplyTo = Operator.FindObjectbyNodeName("OperationApplyTo");
+            OperationApplyTo.Parameters["QueryID"].Value = Query.Parameters["QueryID"].Value;
+            OperationApplyTo.Parameters["Value"].Value = ValueType;
+            OperationApplyTo.Parameters["TimeStepStart"].Value = "0";
+            OperationApplyTo.Parameters["TimeStepEnd"].Value = "100";
+            return Operator;
         }
 
         public void AddOutput(string ValueType, string OperatorType)
         {
-            EngineObject Queries = new EngineObject(_innerXml.SelectSingleNode("//Queries"),_schema);
-            EngineObject Operators = new EngineObject(_innerXml.SelectSingleNode("//Operators"),_schema);
-
-            Queries.AddObject("Query");
-            //var test = Schema.RemoveOptional(sQuery);
-
-            Operators.AddObject("Operator");
-
-
-
-
+            AddOperator(AddQuery(ValueType), ValueType, OperatorType);
         }
 
-        public void AddOutputs(List<string> ValueType, string OperatorType)
+        public void AddOutputs(List<string> ValueTypes, string OperatorType)
         {
-            throw new NotImplementedException();
+            var Query = AddQuery(ValueTypes);
+            foreach (var ValueType in ValueTypes)
+            {
+                AddOperator(Query, ValueType, OperatorType);
+            }
         }
 
         private static bool IsParameter(XmlNode node)

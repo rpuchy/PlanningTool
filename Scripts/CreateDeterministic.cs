@@ -22,7 +22,7 @@ namespace Scripts
 
             foreach (var Model in Models)
             {
-                Model.AddOutput(Model.AddableValueTypes()[0], "SCENARIOALL");
+                Model.AddOutputs(Model.AddableValueTypes(), "SCENARIOALL");
             }
             foreach (var Product in Products)
             {

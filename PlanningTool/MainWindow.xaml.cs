@@ -9,6 +9,7 @@ using System.Data;
 using System.Diagnostics;
 using Microsoft.Win32;
 using EngineAPI;
+using Scripts;
 
 namespace PlanningTool
 {
@@ -165,6 +166,25 @@ namespace PlanningTool
         {
             if (Sim != null)
             {
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                dlg.FileName = "Document"; // Default file name
+                dlg.DefaultExt = ".xml"; // Default file extension
+                dlg.Filter = "XML documents (.xml)|*.xml"; // Filter files by extension
+
+                // Show save file dialog box
+                bool? result = dlg.ShowDialog();
+
+                // Process save file dialog box results
+                if (result == true)
+                {
+                    // Save document
+                    string filename = dlg.FileName;
+                    string tempRequest = System.IO.Path.GetTempPath() + "temp.xml";
+                    Sim.SilentSaveAs(tempRequest);
+                    TestingData.CreateTestingData(tempRequest, filename);
+                }
+
+               
                 //string loglocation = System.IO.Path.GetDirectoryName(fOps.FileName) + "\\Transactionlog.csv";
                 //fOps.AddAlloutputs( 0, 100, loglocation);
                 ////Now produce rebalance rule table
@@ -190,7 +210,7 @@ namespace PlanningTool
                 //Excel.Range srcrange = xlWorksheet.UsedRange;
                 //srcrange.Copy(Type.Missing);
 
-                
+
 
                 //Excel.Worksheet xlNewworksheet = (Excel.Worksheet)xlNewWorkbook.Worksheets.get_Item(1);
 
@@ -206,7 +226,7 @@ namespace PlanningTool
 
                 //VisualData = new TreeViewModel(fOps.EngineObjectTree);
                 //TreeviewControl.SetData(VisualData);
-                
+
             }
         }
 
@@ -241,7 +261,7 @@ namespace PlanningTool
             string tempRequest = System.IO.Path.GetTempPath() + "temp.xml";
             string tempout = System.IO.Path.GetDirectoryName(Sim.Filename) + "\\Results.csv";
 
-            Sim.SaveAs(tempRequest);
+            Sim.SilentSaveAs(tempRequest);
 
             ProcessStartInfo start = new ProcessStartInfo();
             // Enter in the command line arguments, everything you would enter after the executable name itself

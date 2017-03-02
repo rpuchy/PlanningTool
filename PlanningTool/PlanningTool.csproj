@@ -116,6 +116,10 @@
       <Project>{ebd59cf7-dc08-4401-861e-70a090566a14}</Project>
       <Name>EngineAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scripts\Scripts.csproj">
+      <Project>{fc247592-83fb-4dcb-8300-2826302cf3cc}</Project>
+      <Name>Scripts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

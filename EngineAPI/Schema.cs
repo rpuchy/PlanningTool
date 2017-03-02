@@ -113,6 +113,16 @@ namespace EngineAPI
             }
             return null;
         }
+        /// <summary>
+        /// Returns the relevant Scheme node based on the current node
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public XmlNode GetObjectSchema(XmlNode node)
+        {
+            return _innerxml.SelectSingleNode(node.Name);
+        }
+
 
         public static List<ParameterDetails> GetParametersFromXml(XmlNode node,Classifier objectTypes)
         {
@@ -178,8 +188,20 @@ namespace EngineAPI
             catch(Exception e)
             {
                 throw new Exception("Error reading Scheme : " + e.Message + "\n" + node.InnerXml);
+            }            
+        }
+
+        public static XmlNode RemoveOptional(XmlNode inputNode)
+        {
+            XmlNode cNode = inputNode.Clone();
+            foreach(XmlNode node in cNode.ChildNodes)
+            {
+                if (int.Parse(node.Attributes["minOccurs"].Value)!=1)
+                {
+                    cNode.RemoveChild(node);
+                }
             }
-            
+            return cNode;
         }
 
         public static List<string> GetValueTypesfromXml(XmlNode node)

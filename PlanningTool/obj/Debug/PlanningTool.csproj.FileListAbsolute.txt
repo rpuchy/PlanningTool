@@ -19,3 +19,26 @@ c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\Plannin
 c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\PlanningTool\obj\Debug\PlanningTool.csproj.GenerateResource.Cache
 c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\PlanningTool\obj\Debug\PlanningTool.exe
 c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\PlanningTool\obj\Debug\PlanningTool.pdb
+C:\Git\PlanningTool\PlanningTool\bin\Debug\PlanningTool.exe.config
+C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool.exe
+C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool.pdb
+C:\Git\PlanningTool\PlanningTool\bin\Debug\PlanningTool.exe
+C:\Git\PlanningTool\PlanningTool\bin\Debug\PlanningTool.pdb
+C:\Git\PlanningTool\PlanningTool\bin\Debug\EngineAPI.dll
+C:\Git\PlanningTool\PlanningTool\bin\Debug\Scripts.dll
+C:\Git\PlanningTool\PlanningTool\bin\Debug\EngineAPI.pdb
+C:\Git\PlanningTool\PlanningTool\bin\Debug\Scripts.pdb
+C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool.csprojResolveAssemblyReference.cache
+C:\Git\PlanningTool\PlanningTool\obj\Debug\TextSearchControl.baml
+C:\Git\PlanningTool\PlanningTool\obj\Debug\CalibrationTemplate\CalibrationTemplate.g.cs
+C:\Git\PlanningTool\PlanningTool\obj\Debug\MainWindow.g.cs
+C:\Git\PlanningTool\PlanningTool\obj\Debug\TextSearchControl.g.cs
+C:\Git\PlanningTool\PlanningTool\obj\Debug\App.g.cs
+C:\Git\PlanningTool\PlanningTool\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool_MarkupCompile.cache
+C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool_MarkupCompile.lref
+C:\Git\PlanningTool\PlanningTool\obj\Debug\CalibrationTemplate\CalibrationTemplate.baml
+C:\Git\PlanningTool\PlanningTool\obj\Debug\MainWindow.baml
+C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool.g.resources
+C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool.Properties.Resources.resources
+C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool.csproj.GenerateResource.Cache

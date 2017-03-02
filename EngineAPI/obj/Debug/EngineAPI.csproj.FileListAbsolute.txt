@@ -3,3 +3,7 @@ c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\EngineA
 c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\EngineAPI\obj\Debug\EngineAPI.dll
 c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\EngineAPI\obj\Debug\EngineAPI.pdb
 c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\EngineAPI\obj\Debug\EngineAPI.csprojResolveAssemblyReference.cache
+C:\Git\PlanningTool\EngineAPI\bin\Debug\EngineAPI.dll
+C:\Git\PlanningTool\EngineAPI\bin\Debug\EngineAPI.pdb
+C:\Git\PlanningTool\EngineAPI\obj\Debug\EngineAPI.dll
+C:\Git\PlanningTool\EngineAPI\obj\Debug\EngineAPI.pdb

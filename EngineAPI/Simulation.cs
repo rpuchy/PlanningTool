@@ -15,7 +15,7 @@ namespace EngineAPI
     {
 
         private readonly XmlDocument _xmlDoc = new XmlDocument();
-        private readonly string _filename;
+        private string _filename;
 
         public string Filename { get { return _filename; } }
 
@@ -87,8 +87,8 @@ namespace EngineAPI
 
         public void RemoveOutputs()
         {
-            _innerXml.SelectSingleNode("\\Queries").RemoveAll();
-            _innerXml.SelectSingleNode("\\Operators").RemoveAll();
+            _innerXml.SelectSingleNode("//Queries").RemoveAll();
+            _innerXml.SelectSingleNode("//Operators").RemoveAll();
         }
 
         public Simulation(XmlDocument doc) : base(doc,new XmlDocument())
@@ -108,7 +108,14 @@ namespace EngineAPI
         public void SaveAs(string filename)
         {
             _xmlDoc.Save(filename);
+            _filename = filename;
         }
+
+        public void SilentSaveAs(string filename)
+        {
+            _xmlDoc.Save(filename);
+        }
+
 
     }
 }

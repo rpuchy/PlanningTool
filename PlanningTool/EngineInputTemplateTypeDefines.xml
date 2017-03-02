@@ -3692,15 +3692,33 @@
 		<OutputRequirements referenceType="container" referenceSubType="Queries,Operators" minOccurs="1" maxOccurs="1" desc="" >
 			<!-- <Name type="" constraint="" minOccurs="1" maxOccurs="1" default="" desc="" ></Name> -->
 			<Queries minOccurs="1" maxOccurs="1" desc="" >
-				<Query type="Query" subtype="SIMVALUE" minOccurs="0" maxOccurs="" desc="" >
+				<Query type="container" minOccurs="0" maxOccurs="" desc="">
+					<QueryID type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></QueryID>
+					<Type type="const" constraint="string" minOccurs="1" maxOccurs="1" default="SIMVALUE" desc="" ></Type>
+					<Filter referenceType="container" referenceSubType="Where" minOccurs="1" maxOccurs="1" desc="" >
+						<QueryFilter type="container" minOccurs="1" maxOccurs="" desc="">
+							<ObjectName type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></ObjectName>
+							<Where type="container" minOccurs="1" maxOccurs="1" desc="" >
+								<QueryFilterCriteria type="container" minOccurs="1" maxOccurs="1" desc="" >
+									<Field type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></Field>
+									<Value type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></Value>
+								</QueryFilterCriteria>	
+							</Where>
+						</QueryFilter>
+					</Filter>
+					<Values type="container" minOccurs="1" maxOccurs="1" desc="" >
+						<Value type="scalar" constraint="string" minOccurs="1" maxOccurs="" default="" desc="" ></Value>					
+					</Values>							
+				</Query>
+			
+				<Query subtype="SIMVALUE" minOccurs="0" maxOccurs="" desc="" >
 					<QueryID type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></QueryID>
 					<Enabled type="scalar" constraint="(true,false,string)" minOccurs="1" maxOccurs="1" default="true" desc="" ></Enabled>
 					<Type type="const" constraint="string" minOccurs="1" maxOccurs="1" default="SIMVALUE" desc="" ></Type>
 					<DebugOutput minOccurs="0" maxOccurs="1" desc="" >
 						<DebugFile type="scalar" constraint="string" minOccurs="0" maxOccurs="1" default="" desc="NONE" ></DebugFile>
 						<DebugValue type="scalar" constraint="string" minOccurs="0" maxOccurs="1" default="" desc="VALUE" ></DebugValue>
-					</DebugOutput>
-					<!-- individual query type from here -->
+					</DebugOutput>				
 					<Calculate referenceType="container" referenceSubType="For,Values" minOccurs="0" maxOccurs="1" desc="" >
 						<For referenceType="container" referenceSubType="Where" minOccurs="1" maxOccurs="1" desc="" >
 							<Where minOccurs="1" maxOccurs="1" desc="" >

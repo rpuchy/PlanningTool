@@ -376,9 +376,24 @@ namespace EngineAPI
 
         public void AddOutput(string ValueType, string OperatorType)
         {
+            EngineObject Queries = new EngineObject(_innerXml.SelectSingleNode("//Queries"),_schema);
+            EngineObject Operators = new EngineObject(_innerXml.SelectSingleNode("//Operators"),_schema);
+
+            Queries.AddObject("Query");
+            //var test = Schema.RemoveOptional(sQuery);
+
+            Operators.AddObject("Operator");
+
+
+
+
+        }
+
+        public void AddOutputs(List<string> ValueType, string OperatorType)
+        {
             throw new NotImplementedException();
         }
-        
+
         private static bool IsParameter(XmlNode node)
         {
             return ((node.ChildNodes.Count == 1 && node.FirstChild.Name == "#text") || node.ChildNodes.Count == 0);

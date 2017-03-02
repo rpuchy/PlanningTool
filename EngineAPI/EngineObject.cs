@@ -511,11 +511,16 @@ namespace EngineAPI
                     {
                         return false;
                     }
+                    foreach (XmlNode child2 in child.ChildNodes[i].ChildNodes)
+                    {
+                        foreach(XmlNode child3 in child2.ChildNodes)
+                        {
+                            if (child3 != null) return false;
+                        }
+                    }
                 }
-                if (child.FirstChild?.FirstChild?.FirstChild!=null)
-                {
-                    return false;
-                }
+                
+                
             }
             return true;
         }

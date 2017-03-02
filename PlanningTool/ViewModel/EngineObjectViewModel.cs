@@ -68,7 +68,7 @@ namespace PlanningTool
 
         public string Name
         {
-            get { return _engineObject.Name; }
+            get { return (_engineObject.ObjectName==null) ? _engineObject.Name:_engineObject.ObjectName; }
         }
 
         public string Fullyqualifiedname

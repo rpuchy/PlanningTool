@@ -1,0 +1,106 @@
+﻿<Window x:Class="PlanningTool.CalibrationTemplate" Name="This"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PlanningTool"
+        mc:Ignorable="d"
+        Title="CalibrationTemplate" Height="400" Width="650">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="boolToVis" />
+
+        <Style TargetType="{x:Type TextBlock}" 
+           x:Key="GridBlockStyle">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Visibility" 
+              Value="{Binding Path=IsSelected, 
+              RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type ListViewItem}},
+              Converter={StaticResource boolToVis}, 
+                         ConverterParameter=False}" />
+        </Style>
+
+        <Style TargetType="{x:Type FrameworkElement}" 
+           x:Key="GridEditStyle">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Visibility" 
+              Value="{Binding Path=IsSelected, 
+              RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type ListViewItem}},
+              Converter={StaticResource boolToVis}, 
+                         ConverterParameter=True}" />
+        </Style>
+
+    </Window.Resources>
+    <StackPanel>
+        <ListView x:Name="calibFileListView" ItemsSource=
+        "{Binding ElementName=This, Path=CalibFileCollection}">
+            <ListView.View>
+                <GridView>
+
+                    <GridViewColumn Width="300">
+                        <GridViewColumnHeader  
+                                  Tag="CalibrationFile" 
+                                  Content="CalibrationFile" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <DockPanel>
+
+                                        <TextBlock DockPanel.Dock="Left" Text="{Binding Path=CalibrationFile}" Width="230" HorizontalAlignment="Left" TextWrapping="Wrap" />
+                                        <Button DockPanel.Dock="Right" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="5" 
+                                            Content="Browse" Style="{StaticResource GridEditStyle}" Click="BrowseForCalibFile"/>
+                                    </DockPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Width="70">
+                        <GridViewColumnHeader 
+                                  Tag="Currency" 
+                                  Content="Currency" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding Path=Currency}" 
+                             Style="{StaticResource GridBlockStyle}"/>
+                                    <ComboBox SelectedItem="{Binding Path=Currency}"
+                            ItemsSource="{Binding ElementName=This, 
+                                          Path=AvailableCurrencies}" 
+                            Style="{StaticResource GridEditStyle}" />
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Width="200">
+                        <GridViewColumnHeader 
+                                  Tag="AssumptionSet" 
+                                  Content="AssumptionSet" />
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <TextBlock Text="{Binding Path=AssumptionSet}" />
+                             <!--Style="{StaticResource GridBlockStyle}"/>
+                                    <ComboBox SelectedItem="{Binding Path=AssumptionSet}"
+                            ItemsSource="{Binding ElementName=This, 
+                                          Path=AvailableAssumptionSets}" 
+                            Style="{StaticResource GridEditStyle}" />-->
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel>
+            <Button HorizontalAlignment="Right" Margin="5" 
+                Content="CreateTemplate"  Click="CreateTemplate" />
+        </StackPanel>
+    </StackPanel>
+
+
+
+</Window>

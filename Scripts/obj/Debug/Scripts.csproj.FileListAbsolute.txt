@@ -1,0 +1,5 @@
+c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\Scripts\bin\Debug\Scripts.dll
+c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\Scripts\bin\Debug\Scripts.pdb
+c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\Scripts\obj\Debug\Scripts.csprojResolveAssemblyReference.cache
+c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\Scripts\obj\Debug\Scripts.dll
+c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\Scripts\obj\Debug\Scripts.pdb

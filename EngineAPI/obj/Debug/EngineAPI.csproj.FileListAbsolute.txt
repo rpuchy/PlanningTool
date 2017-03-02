@@ -1,0 +1,5 @@
+c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\EngineAPI\bin\Debug\EngineAPI.dll
+c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\EngineAPI\bin\Debug\EngineAPI.pdb
+c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\EngineAPI\obj\Debug\EngineAPI.dll
+c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\EngineAPI\obj\Debug\EngineAPI.pdb
+c:\users\rudolf.puchy\documents\visual studio 2015\Projects\PlanningTool\EngineAPI\obj\Debug\EngineAPI.csprojResolveAssemblyReference.cache

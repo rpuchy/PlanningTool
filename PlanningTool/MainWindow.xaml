@@ -1,0 +1,123 @@
+﻿<Window x:Class="PlanningTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PlanningTool"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="1000" Initialized="Window_Initialized">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="boolToVis" />
+
+        <Style TargetType="{x:Type TextBlock}" 
+           x:Key="GridBlockStyle">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Visibility" 
+              Value="{Binding Path=IsSelected, 
+              RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type ListViewItem}},
+              Converter={StaticResource boolToVis}, 
+                         ConverterParameter=False}" />
+        </Style>
+
+        <Style TargetType="{x:Type FrameworkElement}" 
+           x:Key="GridEditStyle">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Visibility" 
+              Value="{Binding Path=IsSelected, 
+              RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type ListViewItem}},
+              Converter={StaticResource boolToVis}, 
+                         ConverterParameter=True}" />
+        </Style>
+
+    </Window.Resources>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <StackPanel DockPanel.Dock="Top">
+                <Menu >
+                <MenuItem Header="_File" DataContext="this">
+                    <MenuItem Header="_New" Click="MenuItem_Click"  />
+                    <MenuItem Header="_Open" Click="MenuItem_Click_2" />
+                    <MenuItem Header="_Save" Click="MenuItem_Click_3" />
+                    <MenuItem Header="Save _As" Click="MenuItem_Click_4" ></MenuItem>
+                    <Separator />
+                    <MenuItem Header="_Exit" Click="MenuItem_Click_1"  />
+                </MenuItem>
+                    <MenuItem Header="_Edit">
+                        <MenuItem Header="_Create AMP Test data" Click="MenuItem_Click_5" />
+                        <MenuItem Header="_Remove all outputs" Click="MenuItem_Click_6"  />
+                        <MenuItem Header="_Create calibration Template" Click="MenuItem_OnClick_7" />
+                    </MenuItem>
+                </Menu>
+                <ToolBar>
+                    <Button  Content="Run"  ToolTip="Run the simulation" Click="RunButton"/>
+                </ToolBar>
+
+
+            </StackPanel>
+            <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
+                <TextBlock DockPanel.Dock="Left" Width="Auto" HorizontalAlignment="Left">Address :</TextBlock>
+                <Button DockPanel.Dock="Right"  HorizontalAlignment="Right" HorizontalContentAlignment="Right">Go to ></Button>
+                <TextBox x:Name="AddressBox" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"  MinWidth="200" MaxLines="1" TextWrapping="Wrap">Simulation address goes here</TextBox>
+            </DockPanel>
+        </DockPanel>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="300" MinHeight="400" >
+
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="125*"/>
+                <ColumnDefinition Width="204*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="657*"/>
+            </Grid.ColumnDefinitions>
+
+
+
+
+            <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Grid.ColumnSpan="2">
+                <local:TextSearchControl x:Name="TreeviewControl"  DockPanel.Dock="Left"/>
+            </Border>
+            <GridSplitter Width="2" ResizeBehavior="PreviousAndNext" Grid.Column="2"/>
+            <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="2" Margin="2"/>
+
+
+            <ListView  x:Name="listView" ItemsSource="{Binding Path=Parameters}" Grid.Column="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="Auto" MinWidth="442" FontWeight="Bold" >
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <EventSetter Event="MouseDoubleClick" Handler="listViewItem_MouseDoubleClick" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="200" Header="Parameter">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding Path=Name}" />
+                                        <!--Style="{StaticResource GridBlockStyle}"/>
+                                        <TextBox Text="{Binding Path=Name}" 
+                               Style="{StaticResource GridEditStyle}" /> -->
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="200" Header="Value">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding Path=Value}" 
+                                 Style="{StaticResource GridBlockStyle}"/>
+                                        <TextBox Text="{Binding Path=Value}" 
+                               Style="{StaticResource GridEditStyle}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+        </Grid>
+    </DockPanel>
+</Window>

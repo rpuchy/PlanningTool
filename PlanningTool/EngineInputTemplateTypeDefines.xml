@@ -974,6 +974,33 @@
 								</Product>
 								<!-- End Variable Allocation Product -->
 								
+								<!-- START HERE -->
+								
+								<!-- Income -->
+								<Product type="container" valueTypes="ProductValueTypeList" metatype="Product" subtype="Income" minOccurs="" maxOccurs="" desc="A simple income product" >
+									<Enabled type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="1" default="true" desc="Specifies if the product is enabled or not"></Enabled>
+									<Name type="scalar" constraint="string" minOccurs="1" maxOccurs="1" desc="A unique descriptive name for the product that is used by the engine to reference the product" ></Name>
+									<Type type="scalar" constraint="INCOME" minOccurs="1" maxOccurs="1" desc="Defines the type of the Product. This must be INCOME for this product" ></Type>
+									<Params type="container" minOccurs="1" maxOccurs="1" desc="A container for the parameters that define the product">
+										<Asset type="scalar" constraint="Boolean" minOccurs="1" maxOccurs="1" desc="A flag specifying if the product is an asset" ></Asset>
+										<Liability type="scalar" constraint="Boolean" minOccurs="1" maxOccurs="1"  desc="A flag specifying if the product is a liability" ></Liability>
+										<Investable type="scalar" constraint="Boolean" minOccurs="1" maxOccurs="1"  desc="A flag specifying if the product is investable, i.e. can accept an additional cashflow" ></Investable>
+										<SweepCashFlows type="scalar" constraint="Boolean" minOccurs="1" maxOccurs="1" desc="A flag specifying if the cashflows should be swept when the sweep cashflow rebalancing rule is run" ></SweepCashFlows>
+										<ResetHoldings type="scalar" constraint="Boolean" minOccurs="1" maxOccurs="1"  desc="A flag specifying if the holdings of the product should be reset every (timestep-FrequencyStartTimeStep) % ResetFrequency" ></ResetHoldings>
+										<ResetFrequency type="scalar" constraint="int" minOccurs="0" maxOccurs="" default="1" desc="Specifies the number of timesteps that need to occur between ever reset" ></ResetFrequency>
+										<FrequencyStartTimeStep type="scalar" constraint="int" minOccurs="0" maxOccurs="1" default="0" desc="Specifies when the first timestep that the reset counter starts" ></FrequencyStartTimeStep>
+										<MeansTested type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="1" default="false" desc="A flag specifying if the product counts towards Mean testing" ></MeansTested>
+										<FinancialAsset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="1" default="false" desc="A flag specifying if the product is a financial asset, used for deeming in age pension" ></FinancialAsset>
+										<ShortTermAsset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="1" default="false" desc="A flag specifying if the product is short term asset, used for age pension" ></ShortTermAsset>
+										<LongTermIncomeStream type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="1" default="false" desc="A flag specifying if the product provides a long term income stream, used for age pension" ></LongTermIncomeStream>
+										<AccountBased type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="1" default="false" desc="A flag specifying if the product is account based, used for age pension" ></AccountBased>
+										<PartiallyExempt type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="1" default="false" desc="A flag specifying if the product is partially exempt for the purposes of age pension" ></PartiallyExempt>
+									</Params>
+								</Product>
+								<!-- End Income -->
+								
+								
+								
 								<!--- FINISHED UP TO HERE -->
 								
 								

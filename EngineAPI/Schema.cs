@@ -90,8 +90,15 @@ namespace EngineAPI
         /// <returns></returns>
         public XmlNode GetObjectSchema(EngineObject engineObject)
         {
-            string xPath = "//" + engineObject.FullyQualifiedName.Replace('.', '/') + "/Type[@constraint='" + engineObject.ObjectType + "']/..|//" + engineObject.FullyQualifiedName.Replace('.', '/');
+            //try this
+
+            string xPath = "//" + engineObject.FullyQualifiedName.Replace('.', '/') + "/Type[@constraint='" + engineObject.ObjectType + "']/..";
             XmlNodeList candidates = _innerxml.SelectNodes(xPath);
+            if (candidates.Count==0)
+            {
+                xPath = "//"+engineObject.FullyQualifiedName.Replace('.', '/');
+                candidates = _innerxml.SelectNodes(xPath);
+            }
             //Now evaluate the depends and pick the correct model
             bool usemodel = false;
             foreach (XmlNode candidate in candidates)
@@ -214,6 +221,18 @@ namespace EngineAPI
                 templist.Add(val.Trim());
             }
             return templist;
+        }
+
+        public Dictionary<String,List<String>> Schema_Lists()
+        {
+            var temp = new Dictionary<string, List<string>>();
+            XmlNode ConsList = _innerxml.SelectSingleNode("//ConstraintLists");
+            foreach(XmlNode node in ConsList.ChildNodes)
+            {
+                var t = new List<string>();
+                temp.Add(node.Name, node.InnerText.Trim(')').Trim('(').Split(',').ToArray().ToList<string>());
+            }
+            return temp;
         }
 
 

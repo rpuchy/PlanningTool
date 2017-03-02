@@ -82,7 +82,6 @@ namespace EngineAPI
             {
                 ScenariosParams.AddParameter("Scenario", Scenarios[i].ToString());
             }
-            Params.removeObject(tlog_obj);
         }
 
         public void RemoveOutputs()
@@ -110,6 +109,9 @@ namespace EngineAPI
             _xmlDoc.Save(filename);
             _filename = filename;
         }
+
+
+
 
         public void SilentSaveAs(string filename)
         {

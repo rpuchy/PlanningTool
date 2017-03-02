@@ -18,7 +18,8 @@ namespace Scripts
             sim.RemoveOutputs();
 
             var Models = sim.FindObjectsbyNodeName("Model");
-            var Products = sim.FindObjectsbyNodeName("Product");
+            var Products = sim.FindObjectbyNodeName("TaxWrappers").FindObjectsbyNodeName("Product");
+            
 
             foreach (var Model in Models)
             {
@@ -27,6 +28,22 @@ namespace Scripts
             foreach (var Product in Products)
             {
                 Product.AddOutputs(Product.AddableValueTypes(), "SCENARIOALL");
+            }
+
+            //Now Switch out the Calibration
+
+            XmlDocument DetCalibration = new XmlDocument();
+
+            DetCalibration.Load(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @".\DeterministicCalibration.xml");
+
+            var Models_node = sim.FindObjectbyNodeName("Models");
+            Models_node.RemoveAll();
+
+            XmlNode Calibration = DetCalibration.SelectSingleNode("//Models");
+
+            foreach(XmlNode node in Calibration.ChildNodes)
+            {
+                Models_node.AddXml(node);
             }
 
             sim.SaveAs(out_filename);

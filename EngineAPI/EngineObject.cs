@@ -54,7 +54,12 @@ namespace EngineAPI
             {
                 if (currentNode.ParentNode.Name != "#document")
                 {
-                    parent = currentNode.ParentNode.Name + "." + parent;
+                    var pname = currentNode.ParentNode.Name;
+                    if (!pname.Any(x=>char.IsUpper(x)))
+                    {
+                        pname= char.ToUpper(pname[0]) + pname.Substring(1); 
+                    }
+                     parent = pname + "." + parent;
                 }
                 currentNode = currentNode.ParentNode;
             }
@@ -306,7 +311,19 @@ namespace EngineAPI
             return null;
         }
 
-        public void removeObject(EngineObject Obj)
+
+        public void AddXml(XmlNode toAdd)
+        {
+            
+            _innerXml.AppendChild(_innerXml.OwnerDocument.ImportNode(toAdd, true));
+        }
+
+        public void RemoveAll()
+        {
+            _innerXml.RemoveAll();
+        }
+
+        public void RemoveObject(EngineObject Obj)
         {
             int count = Children.Where(x => x.Name == Obj.Name).Count();
             XmlNode Params = _schema.GetObjectSchema(this);
@@ -361,7 +378,27 @@ namespace EngineAPI
         {            
             //Get the models
             XmlNode Params = _schema.GetObjectSchema(this);            
-            return Schema.GetValueTypesfromXml(Params);
+            var plist = Schema.GetValueTypesfromXml(Params);
+            //no we resolve any possible lists.
+            List<string> toRemove = new List<string>();
+            List<string> toAdd = new List<string>();
+            var dict = _schema.Schema_Lists();
+            foreach (var vtype in plist)
+            {
+                
+                List<string> t=new List<string>();
+                if (dict.TryGetValue(vtype,out t))
+                {
+                    toRemove.Add(vtype);
+                    toAdd.AddRange(t);
+                }
+            }
+            foreach(var i in toRemove)
+            {
+                plist.Remove(i);
+            }
+            plist.AddRange(toAdd);
+            return plist;
         }
 
         public EngineObject AddQuery(string ValueType)
@@ -522,7 +559,7 @@ namespace EngineAPI
         /// <returns></returns>
         public EngineObject FindObjectbyNodeName(string nodename)
         {
-            string alternate = char.ToUpper(nodename[0]) + nodename.Substring(1);
+            string alternate = GetAlternate(nodename);
             XmlNode temp = _innerXml.SelectSingleNode(".//" + nodename + "|.//"+alternate);
             return (temp != null) ? new EngineObject(temp,_schema) : null;
         }

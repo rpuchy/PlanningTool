@@ -116,7 +116,7 @@
 						</Currency>
 						<Models Type="container" minOccurs="1" maxOccurs="1" desc="container for all models within a set" >
 							<!-- FileModelTermStructure -->
-							<Model type="container"  metatype="FileModel" subtype="FileModelTermStructure" minOccurs="" maxOccurs="" depends="./../../../..[Source='LOADFROMFILE']" default="" desc="A basic load-from-file term structure model." >
+							<Model type="container"  metatype="FileModel" subtype="FileModelTermStructure" minOccurs="0" maxOccurs="" depends="./../../../..[Source='LOADFROMFILE']" default="" desc="A basic load-from-file term structure model." >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="TWOFACTORHULLWHITE" minOccurs="1" maxOccurs="1" default="TWOFACTORHULLWHITE" desc="The type of this model instance" ></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -130,7 +130,7 @@
 							</Model>
 							<!-- end FileModelTermStructure -->
 							<!-- FileModelEquity-->
-							<Model type="container" metatype="FileModel" subtype="FileModelEquity" minOccurs="" maxOccurs="" depends="./../../../..[Source='LOADFROMFILE']" default="" desc="A basic load-from-file model, which is an Equity type model." >
+							<Model type="container" metatype="FileModel" subtype="FileModelEquity" minOccurs="0" maxOccurs="" depends="./../../../..[Source='LOADFROMFILE']" default="" desc="A basic load-from-file model, which is an Equity type model." >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="EQUITY" minOccurs="1" maxOccurs="1" default="EQUITY" desc="The type of this model instance" ></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -142,7 +142,7 @@
 							</Model>
 							<!-- end FileModelEquity-->
 							<!-- FileModelInflation -->
-							<Model type="container" metatype="FileModel" subtype="FileModelInflation" minOccurs="" maxOccurs="" depends="./../../../..[Source='LOADFROMFILE']" default="" desc="A basic load-from-file model, which is an Inflation type model." >
+							<Model type="container" metatype="FileModel" subtype="FileModelInflation" minOccurs="0" maxOccurs="" depends="./../../../..[Source='LOADFROMFILE']" default="" desc="A basic load-from-file model, which is an Inflation type model." >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="INFLATION" minOccurs="1" maxOccurs="1" default="INFLATION" desc="The type of this model instance" ></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -154,7 +154,7 @@
 							</Model>
 							<!-- end FileModelInflation -->
 							<!-- ExtendedFileModel  -->
-							<Model type="container" metatype="ExtendedFileModel" minOccurs="" maxOccurs="" default="" depends="./../../../..[Source='LOADFROMFILEEXTENDED']"  desc="Extended load from file model, which allows repeating of scenarios, etc." >
+							<Model type="container" metatype="ExtendedFileModel" minOccurs="0" maxOccurs="" default="" depends="./../../../..[Source='LOADFROMFILEEXTENDED']"  desc="Extended load from file model, which allows repeating of scenarios, etc." >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="EQUITY,INFLATION" minOccurs="1" maxOccurs="1" desc="The type of this model instance. Can be either EQUITY or INFLATION" ></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -167,7 +167,7 @@
 										<TimeStepEnd type="scalar" constraint="int" minOccurs="0" maxOccurs="1" defaulttype="reference" default="TimeSteps" desc="The last timestep to apply this file until" ></TimeStepEnd>
 										<SourceTimeStepStart type="scalar" constraint="int" minOccurs="0" maxOccurs="1" default="0" desc="The start timestep of the input file" ></SourceTimeStepStart>
 										<SourceTimeStepEnd type="scalar" constraint="int" minOccurs="0" maxOccurs="1" defaulttype="reference" default="TimeSteps" desc="The end timestep of the input file" ></SourceTimeStepEnd>
-										<FillTime minOccurs="1" maxOccurs="1" desc="container defining how missing data is filled in the simulation" >
+										<FillTime type="container" minOccurs="1" maxOccurs="1" desc="container defining how missing data is filled in the simulation" >
 											<Method type="scalar" constraint="(NOTSET,REPEAT,FIXED,EXTRAPOLATED,COMPOUNDED)" minOccurs="1" maxOccurs="1" default="NOTSET" desc="Specifies the method used to fill data" ></Method>
 											<RepeatStart type="scalar" constraint="string" minOccurs="1" maxOccurs="1" depends="./../[Method='REPEAT']" defaulttype="reference" default="./../../SourceTimeStepStart" desc="The timestep to start repeating the data from" ></RepeatStart>
 											<RepeatEnd type="scalar" constraint="string" minOccurs="1" maxOccurs="1" depends="./../[Method='REPEAT']" defaulttype="reference" default="./../../SourceTimeStepStart" desc="The timestep to stop repeating the data." ></RepeatEnd>
@@ -176,8 +176,8 @@
 										</FillTime>
 									</File>
 								</Files>
-								<Calculations minOccurs="1" maxOccurs="1" desc="container for the calculations associated with the Extended file" >
-									<Calculation minOccurs="" maxOccurs="" desc="container for a extended file load data manipulation calculation">
+								<Calculations type="container" minOccurs="1" maxOccurs="1" desc="container for the calculations associated with the Extended file" >
+									<Calculation  type="container" minOccurs="" maxOccurs="" desc="container for a extended file load data manipulation calculation">
 										<Order type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="0" desc="The order to calculations are performed in" ></Order>
 										<Type type="scalar" constraint="SCALE" minOccurs="1" maxOccurs="1" desc="The type of the calculation that is being performed. This must be SCALE" ></Type>
 										<InputValue type="scalar" constraint="ValueType" minOccurs="1" maxOccurs="1" desc="The valueType is included in the input file" ></InputValue>
@@ -185,7 +185,7 @@
 										<Method type="scalar" constraint="Methods" minOccurs="1" maxOccurs="1" desc="The mathmatical manipulations that can be applied to the InputValue to produce the OutputValue" ></Method>
 										<Value type="scalar" constraint="double" minOccurs="1" maxOccurs="1" desc="The value to be combined with the InputValue using the Method opperator" ></Value>																			
 									</Calculation>
-									<Calculation minOccurs="" maxOccurs="" desc="container for a extended file load data manipulation calculation">
+									<Calculation type="container" minOccurs="" maxOccurs="" desc="container for a extended file load data manipulation calculation">
 										<Order type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="0" desc="The order to calculations are performed in" ></Order>
 										<Type type="scalar" constraint="TERM" minOccurs="1" maxOccurs="1" desc="The type of the calculation that is being performed. This must be TERM" ></Type>
 										<InputFrequency type="scalar" constraint="int" minOccurs="1" maxOccurs="1" desc="The timestep frequency of the input file" ></InputFrequency>
@@ -193,13 +193,13 @@
 										<InputValue type="scalar" constraint="ValueType" minOccurs="1" maxOccurs="1" desc="The valueType is included in the input file" ></InputValue>
 										<OutputValue type="scalar" constraint="ValueType" minOccurs="1" maxOccurs="1" desc="The valueType that is produced via the calculation" ></OutputValue>										
 									</Calculation>
-									<Calculation minOccurs="" maxOccurs="" desc="container for a extended file load data manipulation calculation">
+									<Calculation type="container" minOccurs="" maxOccurs="" desc="container for a extended file load data manipulation calculation">
 										<Order type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="0" desc="The order to calculations are performed in" ></Order>
 										<Type type="scalar" constraint="RATETOROLLUP, RETURNTOROLLUP" minOccurs="1" maxOccurs="1" desc="The type of the calculation that is being performed. This can be either RATETOROLLUP or RETURNTOROLLUP" ></Type>
 										<InputValue type="scalar" constraint="ValueType" minOccurs="1" maxOccurs="1" desc="The valueType is included in the input file" ></InputValue>
 										<OutputValue type="scalar" constraint="ValueType" minOccurs="1" maxOccurs="1" desc="The valueType that is produced via the calculation" ></OutputValue>									
 									</Calculation>
-									<Calculation minOccurs="" maxOccurs="" desc="container for a extended file load data manipulation calculation">
+									<Calculation type="container" minOccurs="" maxOccurs="" desc="container for a extended file load data manipulation calculation">
 										<Order type="scalar" constraint="int" minOccurs="1" maxOccurs="1" desc="The order to calculations are performed in" ></Order>
 										<Type type="scalar" constraint="DISTRIBUTIONOVERRIDE" minOccurs="1" maxOccurs="1" desc="The type of the calculation that is being performed. This must be DISTRIBUTIONOVERRIDE" ></Type>
 										<InputFrequency type="scalar" constraint="int" minOccurs="1" maxOccurs="1" desc="The timestep frequency of the input file" ></InputFrequency>
@@ -211,13 +211,13 @@
 										<OutputValue type="scalar" constraint="ValueType" minOccurs="1" maxOccurs="1" desc="The valueType that is produced via the calculation" ></OutputValue>									
 									</Calculation>																																				
 								</Calculations>
-								<ScenarioValues type="container" minOccurs="1" maxOccurs="1" desc="container of scenario values" >
+								<ScenarioValues type="container"  minOccurs="1" maxOccurs="1" desc="container of scenario values" >
 										<ScenarioValue type="scalar" constraint="ValueType" minoccurs="1" maxoccurs="1" unique="true" desc="The Value Type to be added for this model type. This must be unique in this node, the same input can't be set twice for a given model"></ScenarioValue>
 								</ScenarioValues>								
 							</Model>
 							<!-- end ExtendedFileModel -->																			
 							<!-- EQUITY model -->
-							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,LOGRETURN" metatype="EquityModel" subtype="EquityModel" minOccurs="" maxOccurs="" default="" depends="./../../../..[Source='GENERATED']" desc="An ESG equity-type model.  Modelled as a Geometric Brownian Motion, subject to stochastic risk free and (excess) volatility components." >
+							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,LOGRETURN" metatype="EquityModel" subtype="EquityModel" minOccurs="0" maxOccurs="" default="" depends="./../../../..[Source='GENERATED']" desc="An ESG equity-type model.  Modelled as a Geometric Brownian Motion, subject to stochastic risk free and (excess) volatility components." >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
 								<Type type="const" constraint="EQUITY" minOccurs="1" maxOccurs="1" default="EQUITY" desc="The type of this model instance" ></Type>
@@ -230,7 +230,7 @@
 							</Model>
 							<!-- end EQUITY model -->
 							<!-- CHILDEQUITY model -->
-							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,LOGRETURN" metatype="EquityModel" subtype="ChildEquityModel" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An ESG child equity-type model.  Modelled as a linear (Beta) factor model relative to some other child equity models, subject to stochastic risk free and (excess) volatility components.">
+							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,LOGRETURN" metatype="EquityModel" subtype="ChildEquityModel" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An ESG child equity-type model.  Modelled as a linear (Beta) factor model relative to some other child equity models, subject to stochastic risk free and (excess) volatility components.">
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
 								<Type type="const" constraint="CHILDEQUITY" minOccurs="1" maxOccurs="1" default="CHILDEQUITY" desc="The type of this model instance" ></Type>
@@ -240,7 +240,7 @@
 								<NominalRatesModelID type = "scalar" constraint = "int" reference="Model" referencemetaType="InterestRateModel" referenceField="ModelID" depends="./../[UseNominalRates='true']" minoccurs="0" maxoccurs="1" default="1111111" desc="Points to the nominal interest rate model to use in modelling risk free return component"></NominalRatesModelID>
 								<IncomeModelID type="scalar" constraint="int" reference="Model" referencemetaType="IncomeModel" referenceField="ModelID" minOccurs="0" maxOccurs="1" default="0" desc="The income model used to model split between income return and capital return"></IncomeModelID>
 								<FactorExposures type="container" minOccurs="1" maxOccurs="1" desc="Set of factor exposures from which the model receives Beta exposure">
-									<FactorExposure minOccurs="1" maxOccurs="" desc="A single factor exposure to which this child equity asset receives part of its return" >
+									<FactorExposure type="container" minOccurs="1" maxOccurs="" desc="A single factor exposure to which this child equity asset receives part of its return" >
 										<ModelID type="scalar" constraint="int" reference="Model" referencemetaType="EquityModel" referenceField="ModelID" minOccurs="1" maxOccurs="1" default="" desc="Reference to an equity type model to which the child model is exposed" ></ModelID>
 										<Beta type="scalar" constraint="double" minOccurs="1" maxOccurs="1" default="1" desc="The weight of the child asset to this factor/model" ></Beta>
 									</FactorExposure>
@@ -253,7 +253,7 @@
 							</Model>
 							<!-- end CHILDEQUITY model -->
 							<!-- DETERMINISTIC EQUITY model -->
-							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,LOGRETURN" metatype="EquityModel" subtype="DeterministicEquityModel" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An ESG deterministic equity model.">
+							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,LOGRETURN" metatype="EquityModel" subtype="DeterministicEquityModel" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An ESG deterministic equity model.">
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="DETERMINISTICEQUITY" minOccurs="1" maxOccurs="1" default="DETERMINISTICEQUITY" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -265,7 +265,7 @@
 							</Model>
 							<!-- End DETERMINISTICEQUITY model -->
 							<!-- EquityMeanRevertingPriceLevels -->
-							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,TARGETROLLUP" metatype="EquityModel" subtype="MeanRevertingPriceEquityModel" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="A Equity model with mean reverting price levels" >
+							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,TARGETROLLUP" metatype="EquityModel" subtype="MeanRevertingPriceEquityModel" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="A Equity model with mean reverting price levels" >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="EQUITYMEANREVERTINGPRICELEVELS" minOccurs="1" maxOccurs="1" default="EQUITYMEANREVERTINGPRICELEVELS" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -278,7 +278,7 @@
 							</Model>
 							<!-- End EquityMeanRevertingPriceLevels -->
 							<!-- EquityMeanRevertingRiskPremium -->
-							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,TARGETROLLUP,RISKPREMIUM" metatype="EquityModel" subtype="MeanRevertingRiskPremiumEquityModel" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="A Equity model with mean reverting risk premium" >
+							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,TARGETROLLUP,RISKPREMIUM" metatype="EquityModel" subtype="MeanRevertingRiskPremiumEquityModel" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="A Equity model with mean reverting risk premium" >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="EQUITYMEANREVERTINGRISKPREMIUM" minOccurs="1" maxOccurs="1" default="EQUITYMEANREVERTINGRISKPREMIUM" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -294,7 +294,7 @@
 							</Model>
 							<!-- End EquityMeanRevertingRiskPremium -->
 							<!-- IncomeYield -->
-							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,LOGRETURN" metatype="EquityModel" subtype="IncomeYieldModel" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An income model that divides the total return into an income and capital component" >
+							<Model type="container" valueTypes="ROLLUP,TOTALRETURN,CAPITALRETURN,INCOMERETURN,LOGRETURN" metatype="EquityModel" subtype="IncomeYieldModel" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An income model that divides the total return into an income and capital component" >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="INCOMEYIELD" minOccurs="1" maxOccurs="1" default="INCOMEYIELD" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -309,7 +309,7 @@
 							</Model>
 							<!-- End IncomeYield -->	
 							<!-- ConstantVolatilityModel -->
-							<Model type="container" valueTypes="MEANRETURN,VOLATILITY" metatype="EquityModel" subtype="ConstantVolatilityModel" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An equity volatility model that produces a constant volatility" >
+							<Model type="container" valueTypes="MEANRETURN,VOLATILITY" metatype="EquityModel" subtype="ConstantVolatilityModel" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An equity volatility model that produces a constant volatility" >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="CONSTANTVOLATILITY" minOccurs="1" maxOccurs="1" default="CONSTANTVOLATILITY" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -319,7 +319,7 @@
 							</Model>
 							<!-- End ConstantVolatilityModel -->
 							<!-- RegimeSwitchVolatility Model -->
-							<Model type="container" valueTypes="MEANRETURN,VOLATILITY,REGIME" metatype="EquityModel" subtype="RegimeSwitchingVolatilityModel" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An equity volatility model that switches between two regimes based on probabilities" >
+							<Model type="container" valueTypes="MEANRETURN,VOLATILITY,REGIME" metatype="EquityModel" subtype="RegimeSwitchingVolatilityModel" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An equity volatility model that switches between two regimes based on probabilities" >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="REGIMESWITCHVOLATILITY" minOccurs="1" maxOccurs="1" default="REGIMESWITCHVOLATILITY" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -334,7 +334,7 @@
 							</Model>
 							<!-- End RegimeSwitchVolatility Model -->							
 							<!-- ImpliedVolatility Model -->
-							<Model type="container" valueTypes="MEANRETURN,VOLATILITY,VOLATILITYSHORT,VOLATILITYLONG,VARIANCESHORT,VARIANCELONG,DRIFTSHORT,DRIFTLONG" metatype="EquityModel" subtype="ImpliedVolatilityModel" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An equity implied volatility model that produces implied volatilities consistent with an equity model." >
+							<Model type="container" valueTypes="MEANRETURN,VOLATILITY,VOLATILITYSHORT,VOLATILITYLONG,VARIANCESHORT,VARIANCELONG,DRIFTSHORT,DRIFTLONG" metatype="EquityModel" subtype="ImpliedVolatilityModel" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An equity implied volatility model that produces implied volatilities consistent with an equity model." >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="IMPLIEDVOLATILITY" minOccurs="1" maxOccurs="1" default="IMPLIEDVOLATILITY" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -364,7 +364,7 @@
 							</Model> 
 							<!-- End ImpliedVolatility -->
 							<!-- VolatilityStochastic -->
-							<Model type="container" valueTypes="MEANRETURN,VOLATILITY,VARIANCE" metatype="EquityModel" subtype="StochasticVolatilityModel" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An equity volatility model that produces stochastic volatility, either Heston or GARCH(1,1)." >
+							<Model type="container" valueTypes="MEANRETURN,VOLATILITY,VARIANCE" metatype="EquityModel" subtype="StochasticVolatilityModel" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An equity volatility model that produces stochastic volatility, either Heston or GARCH(1,1)." >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="STOCHASTICVOLATILITY" minOccurs="1" maxOccurs="1" default="STOCHASTICVOLATILITY" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="1" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -379,7 +379,7 @@
 							</Model>
 							<!-- VolatilityStochastic -->							
 							<!-- OneFactorVasicek -->
-							<Model type="container" valueTypes="CASHROLLUP,LOGRATE, CASHRATE" metatype="InterestRateModel" subtype="OneFactorVasicek" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An one factor mean reverting interest/inflation rate model." >
+							<Model type="container" valueTypes="CASHROLLUP,LOGRATE, CASHRATE" metatype="InterestRateModel" subtype="OneFactorVasicek" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="An one factor mean reverting interest/inflation rate model." >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="ONEFACTORVASICEK" minOccurs="1" maxOccurs="1" default="ONEFACTORVASICEK" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="1" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -392,7 +392,7 @@
 							</Model>
 							<!-- End OneFactorVasicek -->							
 							<!-- TwoFactorHullWhite -->
-							<Model type="container" valueTypes="CASHROLLUP,LOGRATE,CASHRATE" metatype="InterestRateModel" subtype="TwoFactorHullWhite" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="A two factor mean reverting interest rate model which takes the initial curve as input." >
+							<Model type="container" valueTypes="CASHROLLUP,LOGRATE,CASHRATE" metatype="InterestRateModel" subtype="TwoFactorHullWhite" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="A two factor mean reverting interest rate model which takes the initial curve as input." >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="TWOFACTORHULLWHITE" minOccurs="1" maxOccurs="1" default="TWOFACTORHULLWHITE" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="1" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -412,7 +412,7 @@
 							</Model>
 							<!-- End TwoFactorHullWhite -->							
 							<!-- Inflation -->
-							<Model type="container" valueTypes="ROLLUP,RATE,LOGRATE" metatype="InflationModel" subtype="Inflation" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="A one factor mean reverting inflation rate model." >								
+							<Model type="container" valueTypes="ROLLUP,RATE,LOGRATE" metatype="InflationModel" subtype="Inflation" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="A one factor mean reverting inflation rate model." >								
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="INFLATION" minOccurs="1" maxOccurs="1" default="INFLATION" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="1" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -425,7 +425,7 @@
 							</Model>
 							<!-- End Inflation -->		
 							<!-- OrnsteinUhlenbeck -->
-							<Model type="container" valueTypes="ROLLUP,RATE,LOGRATE" metatype="InflationModel" subtype="OrnsteinUhlenbeck" constraint="" minOccurs="" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="A one factor mean reverting inflation rate model." >								
+							<Model type="container" valueTypes="ROLLUP,RATE,LOGRATE" metatype="InflationModel" subtype="OrnsteinUhlenbeck" constraint="" minOccurs="0" maxOccurs="" depends="./../../../..[Source='GENERATED']" desc="A one factor mean reverting inflation rate model." >								
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
 								<Type type="const" constraint="ORNSTEINUHLENBECK" minOccurs="1" maxOccurs="1" default="ORNSTEINUHLENBECK" desc="The type of this model instance"></Type>
 								<UseTimeStepSubset type="scalar" constraint="Boolean" minOccurs="1" maxOccurs="0" default="false" desc="Ensure this is always set to false, it is partially implemented code that may crash the system if set to true"></UseTimeStepSubset>
@@ -3761,20 +3761,13 @@
 				
 			</Operators>
 			<ScenarioFiles referenceType="container" referenceSubType="ScenarioFile" minOccurs="0" maxOccurs="1" desc="" >
-				<ScenarioFile minOccurs="0" maxOccurs="" desc="" >
-					<ModelId type="scalar" constraint="int" minOccurs="0" maxOccurs="1" default="-1" desc="" ></ModelId>
-					<ProductName type="scalar" constraint="string" minOccurs="0" maxOccurs="1" default="" desc="" ></ProductName>
-					<Portfolio type="scalar" constraint="string" minOccurs="0" maxOccurs="1" default="" desc="" ></Portfolio>
-					<TaxWrapper type="scalar" constraint="string" minOccurs="0" maxOccurs="1" default="" desc="" ></TaxWrapper>
-					<FileName type="scalar" constraint="string" minOccurs="0" maxOccurs="1" default="" desc="" ></FileName>
-					<ScenarioStart type="scalar" constraint="int" minOccurs="0" maxOccurs="1" default="1" desc="" ></ScenarioStart>
-					<TimeStepStart type="scalar" constraint="int" minOccurs="0" maxOccurs="1" default="1" desc="" ></TimeStepStart>
-					<TimeStepEnd type="scalar" constraint="int" minOccurs="0" maxOccurs="1" default="" desc="" ></TimeStepEnd>
-					<SuppressValueTypeOutput type="scalar" constraint="(true,false,string)" minOccurs="1" maxOccurs="1" default="false" desc="" ></SuppressValueTypeOutput>
-					<ValueTypes minOccurs="0" maxOccurs="" desc="" >
-						<Value type="scalar" constraint="string" minOccurs="0" maxOccurs="" default="" desc="" ></Value>
-						<ZeroPrice minOccurs="0" maxOccurs="" desc="" >
-							<Maturities type="scalar" constraint="string" minOccurs="0" maxOccurs="" default="" desc="" ></Maturities>
+				<ScenarioFile type="container" minOccurs="0" maxOccurs="" desc="" >
+					<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" desc="" ></ModelID>
+					<FileName type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></FileName>
+					<ValueTypes type="container" minOccurs="1" maxOccurs="1" desc="" >
+						<ValueType type="scalar" constraint="string" minOccurs="1" maxOccurs="" default="" desc="" ></ValueType>
+						<ZeroPrice type="container" minOccurs="0" maxOccurs="" desc="" >
+							<Maturities type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></Maturities>
 						</ZeroPrice>
 					</ValueTypes>
 				</ScenarioFile>

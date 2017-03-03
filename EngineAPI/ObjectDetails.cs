@@ -14,6 +14,7 @@ namespace EngineAPI
         public List<TableDetails> Tables { get; set; }
         public List<String> ValueTypes { get; set; } 
         public String NodeName { get; set; }
+        public string Type { get; set; }
         public int minOccurs { get; set; }
         public int maxOccurs { get; set; }
         public string desc { get; set; }
@@ -23,9 +24,16 @@ namespace EngineAPI
         {
             ObjectDetails temp = new ObjectDetails();
             temp.Parameters = Schema.GetParametersFromXml(node, Schema.Classifier.All);
+            foreach (var p in temp.Parameters)
+            {
+                if (p.Name=="Type" || p.Name=="Class")
+                {
+                    temp.Type = p.constraint;
+                }
+            }
             temp.NodeName = node.Name;
-            temp.minOccurs = int.Parse(node.Attributes[Schema.minOccurs]?.Value);
-            temp.maxOccurs = node.Attributes[Schema.maxOccurs]?.Value == "" ? 9999 : int.Parse(node.Attributes[Schema.maxOccurs]?.Value);
+            temp.minOccurs = (int)Schema.Getvalue(node, Schema.Value.minOccurs);
+            temp.maxOccurs = (int)Schema.Getvalue(node, Schema.Value.maxOccurs);
             temp.SubObjects = Schema.GetObjectsFromXml(node, Schema.Classifier.All);
             temp.ValueTypes = Schema.GetValueTypesfromXml(node);            
             temp.XmlSnippet = node.CloneNode(true);            

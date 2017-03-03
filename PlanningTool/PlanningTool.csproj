@@ -124,7 +124,9 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(ProjectDir)EngineInputTemplateTypeDefines.xml " "$(TargetDir)EngineInputTemplateTypeDefines.xml"
-copy /Y "$(ProjectDir)DeterministicCalibration.xml " "$(TargetDir)DeterministicCalibration.xml"</PostBuildEvent>
+copy /Y "$(ProjectDir)DeterministicCalibration.xml " "$(TargetDir)DeterministicCalibration.xml"
+copy /Y "$(ProjectDir)UnitTestHarness.exe" "$(TargetDir)UnitTestHarness.exe"
+copy /Y "$(ProjectDir)DiffMatch*.dll " "$(TargetDir)*"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineAPI", "EngineAPI\Engi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scripts", "Scripts\Scripts.csproj", "{FC247592-83FB-4DCB-8300-2826302CF3CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MillimanMath", "MillimanMath\MillimanMath.csproj", "{C19230FA-6A3A-4538-9D5F-5D3297D735DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FC247592-83FB-4DCB-8300-2826302CF3CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC247592-83FB-4DCB-8300-2826302CF3CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC247592-83FB-4DCB-8300-2826302CF3CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C19230FA-6A3A-4538-9D5F-5D3297D735DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C19230FA-6A3A-4538-9D5F-5D3297D735DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C19230FA-6A3A-4538-9D5F-5D3297D735DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C19230FA-6A3A-4538-9D5F-5D3297D735DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

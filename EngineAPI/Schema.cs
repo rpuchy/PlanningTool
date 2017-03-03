@@ -50,7 +50,39 @@ namespace EngineAPI
 
 
         public enum Classifier { All=1, Required=2,Optional=3 }
+        public enum Value {Name=1, Description, Type, UniqueScopeTo, bounds, constraint,defaultType,defaultval,depends,isUniqueScope, minOccurs, maxOccurs, metaType, reference,referenceField, referenceMetaType,
+        referenceSubType, subType, unique, uniqueSearchRef, valueTypes}
 
+
+        public static string ValueToString(Value val)
+        {
+            switch(val)
+            {
+                case Value.Name: return "Name";
+                case Value.Description: return desc;
+                case Value.Type: return type;
+                case Value.UniqueScopeTo: return UniqueScopeTo;
+                case Value.bounds: return bounds;
+                case Value.constraint: return constraint;
+                case Value.defaultType: return defaultType;
+                case Value.defaultval: return defaultValue;
+                case Value.depends: return depends;
+                case Value.isUniqueScope: return isUniqueScope;
+                case Value.minOccurs: return minOccurs;
+                case Value.maxOccurs: return maxOccurs;
+                case Value.metaType: return metaType;
+                case Value.reference: return reference;
+                case Value.referenceField: return referenceField;
+                case Value.referenceSubType: return referenceSubType;
+                case Value.subType: return subType;
+                case Value.unique: return unique;
+                case Value.uniqueSearchRef: return uniqueSearchRef;
+                case Value.referenceMetaType:return referenceMetaType;
+                case Value.valueTypes: return valueTypes;
+            }
+            return "";
+        }
+  
 
 
         protected XmlNode _innerxml;
@@ -138,10 +170,10 @@ namespace EngineAPI
             {
                 foreach (XmlNode param in node.ChildNodes)
                 {
-                    if (param.Attributes[Schema.type].Value != Schema.container_name)
+                    if (param.Name!="#comment" && (string)Getvalue(param,Value.Type) != Schema.container_name)
                     {
-                        int minOccurs = int.Parse(param.Attributes[Schema.minOccurs]?.Value);
-                        int maxOccurs = param.Attributes[Schema.maxOccurs]?.Value == "" ? 9999 : int.Parse(param.Attributes[Schema.maxOccurs]?.Value);
+                        int minOccurs = (int)Getvalue(node, Value.minOccurs);
+                        int maxOccurs = (int)Getvalue(node, Value.maxOccurs);
                         if (objectTypes == Classifier.Optional && maxOccurs >= 1 && !(minOccurs == 1 && maxOccurs == 1))
                         {
                             templist.Add(ParameterDetails.LoadFromXml(param));
@@ -171,10 +203,10 @@ namespace EngineAPI
                 List<ObjectDetails> templist = new List<ObjectDetails>();
                 foreach (XmlNode param in node.ChildNodes)
                 {
-                    if (param.Attributes[Schema.type].Value == Schema.container_name)
+                    if (param.Name!="#comment" && Getvalue(param, Value.Type).ToString() == Schema.container_name)
                     {
-                        int minOccurs = int.Parse(param.Attributes[Schema.minOccurs]?.Value);
-                        int maxOccurs = param.Attributes[Schema.maxOccurs]?.Value == "" ? 9999 : int.Parse(param.Attributes[Schema.maxOccurs]?.Value);
+                        int minOccurs = (int)Getvalue(node, Value.minOccurs);
+                        int maxOccurs = (int)Getvalue(node, Value.maxOccurs);
                         if (objectTypes == Classifier.Optional && maxOccurs >= 1 && !(minOccurs == 1 && maxOccurs == 1))
                         {
                             templist.Add(ObjectDetails.LoadFromXml(param));
@@ -202,7 +234,7 @@ namespace EngineAPI
             XmlNode cNode = inputNode.Clone();
             foreach(XmlNode node in cNode.ChildNodes)
             {
-                if (int.Parse(node.Attributes["minOccurs"].Value)!=1)
+                if ((int)Getvalue(node,Value.minOccurs)!=1)
                 {
                     cNode.RemoveChild(node);
                 }
@@ -213,9 +245,9 @@ namespace EngineAPI
         public static List<string> GetValueTypesfromXml(XmlNode node)
         {
             List<string> templist = new List<string>();
-            var tempval = node.Attributes[Schema.valueTypes];
+            var tempval = (string)Getvalue(node, Value.valueTypes);                
             if (tempval == null) return templist;
-            foreach (string val in tempval.Value.Split(','))
+            foreach (string val in tempval.Split(','))
             {
                 templist.Add(val.Trim());
             }
@@ -233,6 +265,79 @@ namespace EngineAPI
             }
             return temp;
         }
+
+        public static object Getvalue(XmlNode node, Value ValToget)
+        {
+            switch (ValToget)
+            {
+                case Value.Name: return TryGetValue(ValueToString(ValToget), node, () => { return node.Name;});
+                case Value.Type: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.type].Value; });
+                case Value.Description: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.desc]?.Value; });
+                case Value.UniqueScopeTo: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.UniqueScopeTo]?.Value; });
+                case Value.bounds: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.bounds]?.Value; });
+                case Value.constraint: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.constraint]?.Value; });
+                case Value.defaultType: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.defaultType]?.Value; });
+                case Value.defaultval: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.defaultValue]?.Value; });
+                case Value.depends: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.depends]?.Value; });
+                case Value.isUniqueScope: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.isUniqueScope]?.Value == "true"; });
+                case Value.minOccurs: return TryGetValue(ValueToString(ValToget), node, () => { return int.Parse((node.Attributes[Schema.minOccurs]?.Value == "" || node.Attributes[Schema.minOccurs] == null) ? "0" : node.Attributes[Schema.minOccurs]?.Value); });
+                case Value.maxOccurs: return TryGetValue(ValueToString(ValToget), node, () => { return int.Parse((node.Attributes[Schema.maxOccurs]?.Value == "" || node.Attributes[Schema.maxOccurs] == null) ? "999999" : node.Attributes[Schema.maxOccurs]?.Value); });
+                case Value.metaType: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.metaType]?.Value; });
+                case Value.reference: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.reference]?.Value; });
+                case Value.referenceField: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.referenceField]?.Value; });
+                case Value.referenceMetaType: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.referenceMetaType]?.Value; });
+                case Value.referenceSubType: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.referenceMetaType]?.Value; });
+                case Value.subType: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.subType]?.Value; });
+                case Value.unique: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.unique]?.Value; });
+                case Value.uniqueSearchRef: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.uniqueSearchRef]?.Value; });
+                case Value.valueTypes: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.valueTypes]?.Value; });
+
+                default:
+                    {
+                        throw new Exception("Valuetype : " + ValToget + " is not valid");
+                    }
+
+            }
+
+        }
+
+        private delegate object GetVal();
+
+        private static string GetFullyQualifiedName(XmlNode node)
+        {
+            string parent = "";
+            XmlNode currentNode = node;
+            while (currentNode.ParentNode != null)
+            {
+                if (currentNode.ParentNode.Name != "#document")
+                {
+                    var pname = currentNode.ParentNode.Name;
+                    if (!pname.Any(x => char.IsUpper(x)))
+                    {
+                        pname = char.ToUpper(pname[0]) + pname.Substring(1);
+                    }
+                    parent = pname + "." + parent;
+                }
+                currentNode = currentNode.ParentNode;
+            }
+            return parent + node.Name;
+        }
+
+        private static object TryGetValue(string Value, XmlNode node, GetVal getvalueFunction )
+        {
+            try
+            {
+                var val =  getvalueFunction();
+                return val;
+            }
+            catch (Exception e)
+            {
+                throw new Exception( Value+ " parameter is not correctly populated in : \n"+ GetFullyQualifiedName(node) + "\n" + e.Message + "\n" + node.OuterXml);
+            }
+        }
+
+
+
 
 
     }

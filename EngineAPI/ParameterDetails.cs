@@ -33,26 +33,26 @@ namespace EngineAPI
         public static ParameterDetails LoadFromXml(XmlNode param)
         {
             ParameterDetails t = new ParameterDetails();
-            t.Name = param.Name;
-            t.Description = param.Attributes[Schema.desc]?.Value;
-            t.Type = param.Attributes[Schema.type]?.Value;
-            t.UniqueScopeTo = param.Attributes[Schema.UniqueScopeTo]?.Value;
-            t.bounds = param.Attributes[Schema.bounds]?.Value;
-            t.constraint = param.Attributes[Schema.constraint]?.Value;
-            t.defaultType = param.Attributes[Schema.defaultType]?.Value;
-            t.defaultval = param.Attributes[Schema.defaultValue]?.Value;
-            t.depends = param.Attributes[Schema.depends]?.Value;
-            t.isUniqueScope = param.Attributes[Schema.isUniqueScope]?.Value == "true";
-            t.minOccurs = int.Parse(param.Attributes[Schema.minOccurs]?.Value);
-            t.maxOccurs = param.Attributes[Schema.maxOccurs]?.Value == "" ? 9999 : int.Parse(param.Attributes[Schema.maxOccurs]?.Value);
-            t.metaType = param.Attributes[Schema.metaType]?.Value;
-            t.reference = param.Attributes[Schema.reference]?.Value;
-            t.referenceField = param.Attributes[Schema.referenceField]?.Value;
-            t.referenceMetaType = param.Attributes[Schema.referenceMetaType]?.Value;
-            t.referenceSubType = param.Attributes[Schema.referenceSubType]?.Value;
-            t.subType = param.Attributes[Schema.subType]?.Value;
-            t.unique = param.Attributes[Schema.unique]?.Value;
-            t.uniqueSearchRef = param.Attributes[Schema.uniqueSearchRef]?.Value;
+            t.Name = (string)Schema.Getvalue(param, Schema.Value.Name);
+            t.Description = (string)Schema.Getvalue(param, Schema.Value.Description);
+            t.Type = (string)Schema.Getvalue(param, Schema.Value.Type);
+            t.UniqueScopeTo = (string)Schema.Getvalue(param, Schema.Value.UniqueScopeTo);
+            t.bounds = (string)Schema.Getvalue(param, Schema.Value.bounds);
+            t.constraint = (string)Schema.Getvalue(param, Schema.Value.constraint);
+            t.defaultType = (string)Schema.Getvalue(param, Schema.Value.defaultType);
+            t.defaultval = (string)Schema.Getvalue(param, Schema.Value.defaultval);
+            t.depends = (string)Schema.Getvalue(param, Schema.Value.depends);
+            t.isUniqueScope = (bool)Schema.Getvalue(param, Schema.Value.isUniqueScope);
+            t.minOccurs = (int)Schema.Getvalue(param, Schema.Value.minOccurs);
+            t.maxOccurs = (int)Schema.Getvalue(param, Schema.Value.maxOccurs);
+            t.metaType = (string)Schema.Getvalue(param, Schema.Value.metaType);
+            t.reference = (string)Schema.Getvalue(param, Schema.Value.reference);
+            t.referenceField = (string)Schema.Getvalue(param, Schema.Value.referenceField);
+            t.referenceMetaType = (string)Schema.Getvalue(param, Schema.Value.referenceMetaType);
+            t.referenceSubType = (string)Schema.Getvalue(param, Schema.Value.referenceSubType);
+            t.subType = (string)Schema.Getvalue(param, Schema.Value.subType);
+            t.unique = (string)Schema.Getvalue(param, Schema.Value.unique);
+            t.uniqueSearchRef = (string)Schema.Getvalue(param, Schema.Value.uniqueSearchRef);
             return t;
         }
 

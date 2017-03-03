@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateDeterministic.cs" />
+    <Compile Include="CreateCalibrationTemplate.cs" />
+    <Compile Include="Deterministic.cs" />
+    <Compile Include="TestingData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -48,8 +50,16 @@
       <Project>{ebd59cf7-dc08-4401-861e-70a090566a14}</Project>
       <Name>EngineAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MillimanMath\MillimanMath.csproj">
+      <Project>{c19230fa-6a3a-4538-9d5f-5d3297d735da}</Project>
+      <Name>MillimanMath</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(ProjectDir)UnitTestHarness.exe" "$(TargetDir)UnitTestHarness.exe"
+copy /Y "$(ProjectDir)DiffMatch*.dll " "$(TargetDir)*"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

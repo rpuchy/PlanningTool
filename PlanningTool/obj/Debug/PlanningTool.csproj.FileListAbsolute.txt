@@ -42,3 +42,5 @@ C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool.Properties.Resources.res
 C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool.csproj.GenerateResource.Cache
 C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool.exe
 C:\Git\PlanningTool\PlanningTool\obj\Debug\PlanningTool.pdb
+C:\Git\PlanningTool\PlanningTool\bin\Debug\MillimanMath.dll
+C:\Git\PlanningTool\PlanningTool\bin\Debug\MillimanMath.pdb

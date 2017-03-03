@@ -138,6 +138,10 @@ namespace PlanningTool
         {
             //fOps.UpdateModel(VisualData.FirstGeneration[0]);
             //fOps?.Save();
+            if (Sim != null)
+            {
+                Sim.Save();
+            }
         }
 
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
@@ -182,50 +186,7 @@ namespace PlanningTool
                     string tempRequest = System.IO.Path.GetTempPath() + "temp.xml";
                     Sim.SilentSaveAs(tempRequest);
                     TestingData.CreateTestingData(tempRequest, filename);
-                }
-
-               
-                //string loglocation = System.IO.Path.GetDirectoryName(fOps.FileName) + "\\Transactionlog.csv";
-                //fOps.AddAlloutputs( 0, 100, loglocation);
-                ////Now produce rebalance rule table
-
-                //Excel.Application xlApp = new Excel.Application();
-
-                //Excel.Workbook xlNewWorkbook = xlApp.Workbooks.Add(Type.Missing);
-                //xlApp.DisplayAlerts = false;
-
-
-                //string requestanalyser = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequestAnalyser.xlsm";
-
-                //Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(requestanalyser);
-                //Excel.Worksheet xlWorksheet = xlWorkbook.Worksheets.get_Item("Control");
-
-                //Excel.Range rng = xlWorksheet.get_Range("B1");
-                //rng.Value = fOps.FileName;
-
-                //xlApp.Run("ShowRebalanceRulesByTimestepPriority");
-
-                //xlWorksheet = xlWorkbook.Worksheets.get_Item("RebalanceRules");
-                //xlWorksheet.Select();
-                //Excel.Range srcrange = xlWorksheet.UsedRange;
-                //srcrange.Copy(Type.Missing);
-
-
-
-                //Excel.Worksheet xlNewworksheet = (Excel.Worksheet)xlNewWorkbook.Worksheets.get_Item(1);
-
-                //Excel.Range dstrng = xlNewworksheet.get_Range("A1");
-
-                //dstrng.PasteSpecial(Excel.XlPasteType.xlPasteAll, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, Type.Missing, Type.Missing);
-
-                //xlNewWorkbook.SaveAs(System.IO.Path.GetDirectoryName(fOps.FileName) + "\\Rebalance Rule Priority.xlsx");
-
-                //xlWorkbook.Close();
-                //xlNewWorkbook.Close();
-                //xlApp.Quit();
-
-                //VisualData = new TreeViewModel(fOps.EngineObjectTree);
-                //TreeviewControl.SetData(VisualData);
+                }              
 
             }
         }
@@ -235,8 +196,6 @@ namespace PlanningTool
             if (Sim != null)
             {
                 Sim.RemoveOutputs();
-                //VisualData = new TreeViewModel(fOps.EngineObjectTree);
-                //TreeviewControl.SetData(VisualData);
             }
         }
 
@@ -254,32 +213,43 @@ namespace PlanningTool
         private void Runsimulation()
         {
             // Prepare the process to run
+            Sim.Run();            
+        }
 
-
-            string UnitTestHarness = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @".\UnitTestHarness.exe";
-
-            string tempRequest = System.IO.Path.GetTempPath() + "temp.xml";
-            string tempout = System.IO.Path.GetDirectoryName(Sim.Filename) + "\\Results.csv";
-
-            Sim.SilentSaveAs(tempRequest);
-
-            ProcessStartInfo start = new ProcessStartInfo();
-            // Enter in the command line arguments, everything you would enter after the executable name itself
-            start.Arguments = @"--forceoutput --testdata """ + tempRequest + @" "" --compdata c:\res.csv --csvresdata """ + tempout + @"""";
-            // Enter the executable to run, including the complete path
-            start.FileName = UnitTestHarness;
-            // Do you want to show a console window?
-            start.WindowStyle = ProcessWindowStyle.Normal;
-            start.CreateNoWindow = true;
-            int exitCode;
-            // Run the external process & wait for it to finish
-            using (Process proc = Process.Start(start))
+        private void MenuItem_Click_8(object sender, RoutedEventArgs e)
+        {
+            if (Sim != null)
             {
-                proc.WaitForExit();
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                dlg.FileName = "Document"; // Default file name
+                dlg.DefaultExt = ".xml"; // Default file extension
+                dlg.Filter = "XML documents (.xml)|*.xml"; // Filter files by extension
 
-                // Retrieve the app's exit code
-                exitCode = proc.ExitCode;
+                // Show save file dialog box
+                bool? result = dlg.ShowDialog();
+
+                // Process save file dialog box results
+                if (result == true)
+                {
+                    // Save document
+                    string filename = dlg.FileName;
+                    string tempRequest = System.IO.Path.GetTempPath() + "temp.xml";
+                    Sim.SilentSaveAs(tempRequest);
+                    Deterministic.CreateDeterministicSim(tempRequest, filename);
+                }
+
             }
+        }
+
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            var param = (TextBox)sender;
+            Selecteditem.Parameters[_parameters[listView.SelectedIndex].Name].Value = param.Text;
         }
     }
 

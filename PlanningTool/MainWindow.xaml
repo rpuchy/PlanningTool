@@ -47,6 +47,7 @@
                     <MenuItem Header="_Edit">
                         <MenuItem Header="_Create AMP Test data" Click="MenuItem_Click_5" />
                         <MenuItem Header="_Remove all outputs" Click="MenuItem_Click_6"  />
+                        <MenuItem Header="Create _Deterministic Sim File" Click="MenuItem_Click_8"  />
                         <MenuItem Header="_Create calibration Template" Click="MenuItem_OnClick_7" />
                     </MenuItem>
                 </Menu>
@@ -108,8 +109,8 @@
                                     <Grid>
                                         <TextBlock Text="{Binding Path=Value}" 
                                  Style="{StaticResource GridBlockStyle}"/>
-                                        <TextBox Text="{Binding Path=Value}" 
-                               Style="{StaticResource GridEditStyle}" />
+                                        <TextBox Text="{Binding Path=Value }" 
+                               Style="{StaticResource GridEditStyle}"  KeyUp="TextBox_KeyUp"  />
                                     </Grid>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>

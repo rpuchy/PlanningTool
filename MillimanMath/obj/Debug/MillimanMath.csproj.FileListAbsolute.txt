@@ -1,0 +1,4 @@
+C:\Git\PlanningTool\MillimanMath\bin\Debug\MillimanMath.dll
+C:\Git\PlanningTool\MillimanMath\bin\Debug\MillimanMath.pdb
+C:\Git\PlanningTool\MillimanMath\obj\Debug\MillimanMath.dll
+C:\Git\PlanningTool\MillimanMath\obj\Debug\MillimanMath.pdb

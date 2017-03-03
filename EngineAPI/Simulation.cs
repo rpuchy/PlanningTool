@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace EngineAPI
 {
@@ -44,14 +45,37 @@ namespace EngineAPI
             SetFullyQualifiedName();
         }
 
-        public void AddScenarioFile(string ModelID)
+        public void AddScenarioFile(string ModelID, string outputFile, string ValueType="", string Maturities="")
         {
-            throw new NotImplementedException();
+            var ScenarioFiles = FindObjectbyNodeName("ScenarioFiles");
+            if (ScenarioFiles==null)
+            {
+                ScenarioFiles=this.FindObjectbyNodeName("OutputRequirements").AddObject("ScenarioFiles");
+            }
+            var ScenarioFile = ScenarioFiles.AddObject("ScenarioFile");
+            
+            ScenarioFile.Parameters["ModelID"].Value = ModelID;
+            ScenarioFile.Parameters["FileName"].Value = outputFile;
+            var valueType_model = ScenarioFile.FindObjectbyNodeName("ValueTypes");
+            valueType_model.Parameters["ValueType"].Value = ValueType;
+            if (Maturities!="")
+            {
+                var Zeroprice = valueType_model.AddObject("ZeroPrice");
+                Zeroprice.Parameters["Maturities"].Value = Maturities;
+            }
         }
 
-        public void AddAllScenarioFiles()
+        public void AddAllScenarioFiles(string outputfile, string Maturities="")
         {
-            throw new NotImplementedException();
+            var modelList = this.FindObjectsbyNodeName("Model");
+            var filename = Path.GetDirectoryName(outputfile) +"\\"+ Path.GetFileNameWithoutExtension(outputfile);
+            var ext = Path.GetExtension(outputfile);
+
+            foreach (EngineObject model in modelList)
+            {
+                string ModelID = model.Parameters["ModelID"].Value.ToString();
+                AddScenarioFile(ModelID,filename+"_"+ModelID+ext, "", Maturities);
+            }
         }
 
         public void SetoutputLocation(string filename)
@@ -64,6 +88,48 @@ namespace EngineAPI
             }
             node.InnerText = filename;
             
+        }
+
+        public void Run()
+        {
+
+            this.Run(this.FindObjectbyNodeName("Params").Parameters["OutputFile"].Value.ToString());            
+        }
+
+
+        public void Run(string outputfile)
+        {
+            string outpath = System.IO.Path.GetTempPath() + "\\scendata.xml";
+
+            this.SilentSaveAs(outpath);
+
+            string UnitTestHarness = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\UnitTestHarness.exe";
+
+            if (File.Exists(UnitTestHarness))
+            {
+                ProcessStartInfo start = new ProcessStartInfo();
+                // Enter in the command line arguments, everything you would enter after the executable name itself
+                start.Arguments = @"--forceoutput --testdata """ + outpath + @" "" --compdata c:\res.csv --csvresdata """ + outputfile+ "\"";
+
+                // Enter the executable to run, including the complete path
+                start.FileName = UnitTestHarness;
+                // Do you want to show a console window?
+                start.WindowStyle = ProcessWindowStyle.Normal;
+                start.CreateNoWindow = true;
+                int exitCode;
+                // Run the external process & wait for it to finish
+                using (Process proc = Process.Start(start))
+                {
+                    proc.WaitForExit();
+
+                    // Retrieve the app's exit code
+                    exitCode = proc.ExitCode;
+                }
+            }
+            else
+            {
+                throw new Exception("The engine can not be found.");
+            }
         }
 
         public void AddTransactionLog(string filename, List<int> Scenarios)
@@ -110,8 +176,32 @@ namespace EngineAPI
             _filename = filename;
         }
 
+        public void UpdateSimulation()
+        {
+            throw new NotImplementedException();
+        }
 
+        public void UpdateCalibration(string CalibrationFile)
+        {
+            XmlDocument DetCalibration = new XmlDocument();
 
+            DetCalibration.Load(System.IO.Path.GetDirectoryName(CalibrationFile));
+
+            var ESG = this.FindObjectbyNodeName("EconomicScenarioGenerator");
+            ESG.RemoveAll();
+
+            XmlNode Calibration = DetCalibration.SelectSingleNode("//EconomicScenarioGenerator");
+
+            foreach (XmlNode node in Calibration.ChildNodes)
+            {
+                ESG.AddXml(node);
+            }
+        }
+
+        public void Validate()
+        {
+            throw new NotImplementedException();
+        }
 
         public void SilentSaveAs(string filename)
         {

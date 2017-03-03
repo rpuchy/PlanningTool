@@ -89,6 +89,7 @@ namespace EngineAPI
             }
         }
 
+
         private void _parameters_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems !=null)
@@ -239,38 +240,62 @@ namespace EngineAPI
         /// Search through the Schema and return a list of addable submodels
         /// </summary>
         /// <returns>A list of addable submodels</returns>
-        public List<ObjectDetails> AddableObjects()
+        public List<ObjectDetails> AddableObjects
         {
-            //This is for addable objects e.g. ESG models/products/rebalance rules
-            List<ObjectDetails> templist = new List<ObjectDetails>();
-            try
+            get
             {
-                XmlNode Params = _schema.GetObjectSchema(this);
-                var ObjectList = Schema.GetObjectsFromXml(Params, Schema.Classifier.Optional);
-                //Now we check if any objects have maxOccurs=1 and already exist
-
-                foreach (var obj in ObjectList)
+                //This is for addable objects e.g. ESG models/products/rebalance rules
+                List<ObjectDetails> templist = new List<ObjectDetails>();
+                try
                 {
-                    if (obj.maxOccurs >= 1)
+                    XmlNode Params = _schema.GetObjectSchema(this);
+                    var ObjectList = Schema.GetObjectsFromXml(Params, Schema.Classifier.Optional);
+                    //Now we check if any objects have maxOccurs=1 and already exist
+
+                    foreach (var obj in ObjectList)
                     {
-                        int count = Children.Where(x => x.Name == obj.NodeName).Count();
-                        if (count < obj.maxOccurs)
+                        if (obj.maxOccurs >= 1)
                         {
-                            templist.Add(obj);
+                            int count = Children.Where(x => x.Name == obj.NodeName).Count();
+                            if (count < obj.maxOccurs)
+                            {
+                                templist.Add(obj);
+                            }
                         }
                     }
                 }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                return templist;
             }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return templist;
         }
 
         public EngineObject AddObject(string objName)
         {
-            var objs = AddableObjects().Find(x => x.NodeName == objName);
+            var objs = AddableObjects.Find(x => x.NodeName == objName);
+            if (objs != null)
+            {
+                var node = _innerXml.OwnerDocument.ImportNode(objs.XmlSnippet, true);
+                node.Attributes.RemoveAll();
+                foreach (XmlElement el in node.SelectNodes(".//*"))
+                {
+                    if (el.Attributes[Schema.defaultValue] != null)
+                    {
+                        el.InnerText = el.Attributes[Schema.defaultValue].Value;
+                    }
+                    el.Attributes.RemoveAll();
+                }
+                _innerXml.AppendChild(node);
+                return new EngineObject(node, _schema);
+            }
+            return null;
+        }
+
+        public EngineObject AddObject(string objName, string type)
+        {
+            var objs = AddableObjects.Find(x => (x.NodeName == objName) && (x.Type==type));
             if (objs != null)
             {
                 var node = _innerXml.OwnerDocument.ImportNode(objs.XmlSnippet, true);
@@ -290,10 +315,11 @@ namespace EngineAPI
         }
 
 
+
         public EngineObject AddObject(ObjectDetails AddObject)
         {
             //first check we can add the object
-            if (AddableObjects().Find(x=>x.NodeName==AddObject.NodeName)!=null)
+            if (AddableObjects.Find(x=>x.NodeName==AddObject.NodeName)!=null)
             {
                 var node = _innerXml.OwnerDocument.ImportNode(AddObject.XmlSnippet, true);
                 node.Attributes.RemoveAll();
@@ -317,10 +343,34 @@ namespace EngineAPI
             
             _innerXml.AppendChild(_innerXml.OwnerDocument.ImportNode(toAdd, true));
         }
-
+        /// <summary>
+        /// Remnove all models regardless of type
+        /// </summary>
         public void RemoveAll()
         {
             _innerXml.RemoveAll();
+        }
+
+        /// <summary>
+        /// Remove all models of a specific type
+        /// </summary>
+        /// <param name="type"></param>
+        public void RemoveAll(string type)
+        {
+            var modelsToRemove = _innerXml.SelectNodes(".//*[Type='" + type + "']");
+            foreach (XmlNode node in modelsToRemove)
+            {
+                node.ParentNode.RemoveChild(node);
+            }
+        }
+
+        public void RemoveObjects(string type)
+        {
+            var nodes = _innerXml.SelectNodes(".//" + type);
+            foreach (XmlNode node in nodes)
+            {
+                node.ParentNode.RemoveChild(node);
+            }
         }
 
         public void RemoveObject(EngineObject Obj)

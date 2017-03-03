@@ -65,6 +65,17 @@ namespace PlanningTool
             }
         }
 
+        public ReadOnlyCollection<String> AddableObjects
+        {
+            get
+            {
+                return new ReadOnlyCollection<string>(
+                   (from child in _engineObject.AddableObjects
+                    select child.Type)
+                     .ToList<String>());
+            }
+        }
+
         public string Name
         {
             get { return (_engineObject.ObjectName==null) ? _engineObject.Name:_engineObject.ObjectName; }

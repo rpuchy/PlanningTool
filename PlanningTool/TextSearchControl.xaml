@@ -40,8 +40,13 @@
     </Border>
 
     <!-- FAMILY TREE -->
-        <TreeView ItemsSource="{Binding RootNode}" x:Name="EngineObjectViewTree">
-      <TreeView.ItemContainerStyle>
+        <TreeView ItemsSource="{Binding RootNode}" x:Name="EngineObjectViewTree" >
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="Add" Header="Add"></MenuItem>
+                </ContextMenu>
+            </TreeView.ContextMenu>
+            <TreeView.ItemContainerStyle>
         <!-- 
         This Style binds a TreeViewItem to a PersonViewModel. 
         -->

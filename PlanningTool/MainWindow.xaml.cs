@@ -120,6 +120,7 @@ namespace PlanningTool
             
             AddressBox.Text = ((EngineObjectViewModel) e.NewValue).Fullyqualifiedname;
             Selecteditem = (EngineObjectViewModel)e.NewValue;
+
         }
 
         private void Param_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

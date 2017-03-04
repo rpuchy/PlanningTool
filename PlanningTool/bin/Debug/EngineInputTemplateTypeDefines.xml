@@ -111,10 +111,10 @@
 				<Source type="scalar" constraint="ESGSource" minOccurs="1" maxOccurs="1" default="GENERATED" desc="The method used to generate economic scenarios" ></Source>
 				<Currencies  type="container" minOccurs="1" maxOccurs="1" desc="The set of ESG currencies.  All ESG models are contained within a specified currency." >
 					<ESGCurrencies  type="container" minOccurs="1" maxOccurs="" desc="container for a single ESG currency.">
-						<Currency Type="container" minOccurs="1" maxOccurs="1" desc="container for currency name">
+						<Currency type="container" minOccurs="1" maxOccurs="1" desc="container for currency name">
 							<Code type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="AUD" unique="true" uniqueSearchRef="./../..//Code" desc="The currency code identifying the currency.  Must be unique across all currencies for valid requests." ></Code>
 						</Currency>
-						<Models Type="container" minOccurs="1" maxOccurs="1" desc="container for all models within a set" >
+						<Models type="container" minOccurs="1" maxOccurs="1" desc="container for all models within a set" >
 							<!-- FileModelTermStructure -->
 							<Model type="container"  metatype="FileModel" subtype="FileModelTermStructure" minOccurs="0" maxOccurs="" depends="./../../../..[Source='LOADFROMFILE']" default="" desc="A basic load-from-file term structure model." >
 								<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" unique="true" uniqueSearchRef="//ModelID" desc="The unique identifier for this model" ></ModelID>
@@ -468,13 +468,13 @@
 					</Person>
 				</People>
 			</Client>
-			<Tables referenceType="container" referenceSubType="Table" minOccurs="1" maxOccurs="1" desc="" >
+			<Tables type="container" referenceType="container" referenceSubType="Table" minOccurs="1" maxOccurs="1" desc="" >
 				<!-- Co Contribution Table -->
 				<Table type="container" subtype="CoContributionTable" minOccurs="" maxOccurs=""  desc="A Co Contribution table definition">
 					<Name type="scalar" constraint="string" minOccurs="1" maxOccurs="1" desc="A unique identifier and name used as reference to this table elsewhere in the engine."></Name>
 					<Type type="const" constraint="COCONTRIBUTION" minOccurs="1" maxOccurs="1" default="COCONTRIBUTION" desc="The type of this model instance. Must be set to COCONTRIBUTION"></Type>
 					<Enabled type="scalar" constain="Boolean" minOccurs="0" maxOccurs="1" default="true" desc="Specifies if the table is enabled or disabled"></Enabled>
-					<Definition Type="container" minOccurs="1" maxOccurs="1" desc="Holds the definition of the co contribution rule">
+					<Definition type="container" minOccurs="1" maxOccurs="1" desc="Holds the definition of the co contribution rule">
 						<Percentage type="scalar" constraint="double" minOccurs="1" maxOccurs="1" bound="[0,)" desc="The percentage of after-tax contributions that will be made as a co-contribution, subject to the Upper Limit."></Percentage>
 						<LowerThreshold type="scalar" constraint="double" minOccurs="1" maxOccurs="1" bound="[0,)" desc="Anyone earning below this lower salary threshold will receive a co-contribution specified as (percentage x after-tax contributions), subject to the Maximum Entitlement."></LowerThreshold>
 						<UpperThreshold type="scalar" constraint="double" minOccurs="1" maxOccurs="1" bound="[0,)" desc="Anyone earning equal to or above this upper threshold will not be eligible for any co-contributions"></UpperThreshold>
@@ -547,7 +547,7 @@
 						</Bracket>
 					</IncomeTaxSchedule>
 					<PreservationAge type="container" minOccurs="1" maxOccurs="1" desc="Describes the preservation age tabular data">
-						<PreservationAgeSchedule Type="container" minOccurs="1" maxOccurs="" desc="Describes a row of the preservation age table">
+						<PreservationAgeSchedule type="container" minOccurs="1" maxOccurs="" desc="Describes a row of the preservation age table">
 							<DOBThreshold type="scalar" constraint="Date(string)" minOccurs="1" maxOccurs="1" desc="The date of birth that the threshold will be applicable for. This must be populated in the 'YYYY-MM-DD' format."></DOBThreshold>
 							<PreservationAge type="scalar" constraint="double" minOccurs="1" maxOccurs="1" desc="The preservation age for the person based on their date of birth."></PreservationAge>
 						</PreservationAgeSchedule>
@@ -707,7 +707,7 @@
 					<Enabled type="scalar" constain="Boolean" minOccurs="0" maxOccurs="1" default="true" desc="Specifies if the table is enabled or disabled"></Enabled>
 					<CoContribution type="container" minOccurs="1" maxOccurs="1" desc="A container for the tabular data" >
 						<FactorWeightsTable type="container" minOccurs="1" maxOccurs="" desc="A single row of the factor weight table" >
-							<Weight>
+							<Weight type="container" minOccurs="1" maxOccurs="" desc="">
 								<Maturity type="scalar" constraint="int" minOccurs="1" maxOccurs="1" desc="The maturity of the interest rate that the factor weight applies to" ></Maturity>
 								<Factor1 type="scalar" constraint="double" minOccurs="1" maxOccurs="1" desc="The weight applied to the maturity on factor 1" ></Factor1>
 								<Factor2 type="scalar" constraint="double" minOccurs="0" maxOccurs="1" desc="The weight applied to the maturity on factor 2" ></Factor2>
@@ -718,17 +718,17 @@
 				</Table>
 				<!-- End FactorWeights -->
 			</Tables>
-			<Portfolios referenceType="container" minOccurs="1" maxOccurs="1" desc="A container for all portfolio descriptions" >
-				<Portfolio referenceType="container" minOccurs="1" maxOccurs="" desc="A container for a portfolio definition"  >
+			<Portfolios type="container" referenceType="container" minOccurs="1" maxOccurs="1" desc="A container for all portfolio descriptions" >
+				<Portfolio type="container"  referenceType="container" minOccurs="1" maxOccurs="" desc="A container for a portfolio definition"  >
 					<Name type="scalar" constraint="string" minOccurs="1" maxOccurs="1" desc="A unique descriptive name for the portfolio" ></Name>
-					<TaxWrappers Type="container" SubType="TaxWrapper" minOccurs="1" maxOccurs="1" desc="A container for all the tax wrappers within a portfolio" >
+					<TaxWrappers type="container" SubType="TaxWrapper" minOccurs="1" maxOccurs="1" desc="A container for all the tax wrappers within a portfolio" >
 						<TaxWrapper type="container" minOccurs="1" maxOccurs="" desc="A container for a single tax wrapper" >
 							<Name type="scalar" constraint="string" minOccurs="1" maxOccurs="1" desc="A unqiue descriptive name for the tax wrapper. This is used by the engine to reference the tax wrapper" ></Name>
 							<Params type="container" minOccurs="1" maxOccurs="1" desc="A container for basic parameter that apply to the tax wrapper">
 								<TaxTable type="scalar" constraint="string" minOccurs="1" maxOccurs="1" desc="The tax table that applies to the tax wrapper" ></TaxTable>
 								<SuperContributionDetailsTable type="scalar" constraint="string" minOccurs="0" maxOccurs="1" desc="The Super contribution details table that applies to the tax wrapper" ></SuperContributionDetailsTable>
 							</Params>						
-							<Products referenceType="container" minOccurs="1" maxOccurs="1" desc="A container for the products that exist within the tax wrapper" >
+							<Products type="container"  referenceType="container" minOccurs="1" maxOccurs="1" desc="A container for the products that exist within the tax wrapper" >
 								<!-- This is a template for a product, i.e. basic non specific definition -->
 								<Product type="container" subtype="??????" minOccurs="" maxOccurs="" desc="???????" >
 									<Enabled type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="1" default="true" desc="Specifies if the product is enabled or not"></Enabled>
@@ -749,14 +749,14 @@
 										<AccountBased type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="1" default="false" desc="A flag specifying if the product is account based, used for age pension" ></AccountBased>
 										<PartiallyExempt type="scalar" constraint="Boolean" minOccurs="0" maxOccurs="1" default="false" desc="A flag specifying if the product is partially exempt for the purposes of age pension" ></PartiallyExempt>
 									</Params>
-									<Assets referenceType="container" minOccurs="0" maxOccurs="1" desc="For products that have an asset allocation, specifies the asset allocation" >
+									<Assets type="container"  referenceType="container" minOccurs="0" maxOccurs="1" desc="For products that have an asset allocation, specifies the asset allocation" >
 										<!-- This is used for fixed allocation fund -->
-										<AssetAllocation referenceType="container" minOccurs="1" maxOccurs="" desc="A container for the allocation to a single asset model" >
+										<AssetAllocation type="container" referenceType="container" minOccurs="1" maxOccurs="" desc="A container for the allocation to a single asset model" >
 											<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" reference="Model" referencemetaType="EquityModel" referenceField="ModelID" desc="The ModelID of the ESG asset model that this product has an allocation to" ></ModelID>
 											<Weight type="scalar" constraint="double" minOccurs="1" maxOccurs="1" desc="The weight allocated to this asset" ></Weight>
 										</AssetAllocation>
 										<!-- this is used for variable allocation fund -->
-										<DynamicAssetAllocation minOccurs="1" maxOccurs="" desc="A container for an asset allocation that changes over time." >
+										<DynamicAssetAllocation type="container"  minOccurs="1" maxOccurs="" desc="A container for an asset allocation that changes over time." >
 											<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" reference="Model" referencemetaType="EquityModel" referenceField="ModelID" desc="The ModelID of the ESG asset model that this product has an allocation to"  ></ModelID>
 											<Weight type="scalar" constraint="double" minOccurs="1" maxOccurs="1" desc="The weight allocated to this asset" ></Weight>
 											<TimeStepStart type="scalar" constraint="int" minOccurs="1" maxOccurs="1" desc="The timestep the allocation to this asset begins" ></TimeStepStart>
@@ -1444,12 +1444,12 @@
 								<!-- end Option -->
 								<!-- -->
 								<!-- TrackAnnualHistory -->
-								<TrackAnnualHistory minOccurs="1" maxOccurs="1" desc="Product" ValueTypes="ProductValueTypeList,NOTIONAL,SECOND,THIRD">
+								<TrackAnnualHistory type="container"  minOccurs="1" maxOccurs="1" desc="Product" ValueTypes="ProductValueTypeList,NOTIONAL,SECOND,THIRD">
 									<Enabled type="scalar" constraint="(true,string)" minOccurs="1" maxOccurs="1" default="true" ></Enabled>
 									<!-- If not in params, Name and Type searched here -->
 									<Name type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></Name>
 									<Type type="const" constraint="string" minOccurs="1" maxOccurs="1" default="TrackAnnualHistory" desc="" ></Type>
-									<Params>
+									<Params type="container" >
 										<Name type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></Name>
 										<Type type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></Type>
 										<!-- all params read in as string -->
@@ -1473,12 +1473,12 @@
 										<!-- End TrackAnnualHistory PopulateParametersFromInputTree -->
 									</Params>
 									<!-- -->
-									<Assets referenceType="container" referenceSubType="Asset" minOccurs="1" maxOccurs="1" isUniqueScope="1" UniqueScopeTo="Product" desc="" >
-										<AssetAllocation minOccurs="1" maxOccurs="0" desc="" >
+									<Assets type="container"  referenceType="container" referenceSubType="Asset" minOccurs="1" maxOccurs="1" isUniqueScope="1" UniqueScopeTo="Product" desc="" >
+										<AssetAllocation type="container"  minOccurs="1" maxOccurs="0" desc="" >
 											<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" desc="" ></ModelID>
 											<Weight type="scalar" constraint="double" minOccurs="1" maxOccurs="1" default="" desc="" ></Weight>
 										</AssetAllocation>
-										<DynamicAssetAllocation minOccurs="1" maxOccurs="0" desc="" >
+										<DynamicAssetAllocation type="container"  minOccurs="1" maxOccurs="0" desc="" >
 											<ModelID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" desc="" ></ModelID>
 											<Weight type="scalar" constraint="double" minOccurs="1" maxOccurs="1" default="" desc="" ></Weight>
 											<TimeStepStart type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" desc="" ></TimeStepStart>
@@ -1489,12 +1489,12 @@
 								<!-- end TrackAnnualHistory -->
 								<!-- -->
 								<!-- TrackingProduct -->
-								<TrackingProduct minOccurs="1" maxOccurs="1" valueTypes="ProductValueTypeList" desc="Product"  >
+								<TrackingProduct type="container"  minOccurs="1" maxOccurs="1" valueTypes="ProductValueTypeList" desc="Product"  >
 									<Enabled type="scalar" constraint="(true,string)" minOccurs="1" maxOccurs="1" default="true" ></Enabled>
 									<!-- If not in params, Name and Type searched here -->
 									<Name type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></Name>
 									<Type type="const" constraint="string" minOccurs="1" maxOccurs="1" default="TrackingProduct" desc="" ></Type>
-									<Params>
+									<Params type="container" >
 										<Name type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></Name>
 										<Type type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></Type>
 										<!-- all params read in as string -->
@@ -3694,8 +3694,8 @@
 				</Portfolio>
 			</Portfolios>
 		</Inputs>
-		<OverrideSets Type="container" minOccurs="1" maxOccurs="1" desc="The set of possible Override Sets which can be used in a request.">
-			<OverrideSet minOccurs="1" maxOccurs="" >
+		<OverrideSets type="container" minOccurs="1" maxOccurs="1" desc="The set of possible Override Sets which can be used in a request.">
+			<OverrideSet type="container" minOccurs="1" maxOccurs="" >
 				<SetNumber type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="-1" ></SetNumber>
 				<OverrideType type="scalar" constraint="(NONE,PRODUCT,MODEL,SALARY,string)" minOccurs="1" maxOccurs="1" default="NONE" ></OverrideType>
 				<TimeStepStart type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="0" ></TimeStepStart>
@@ -3716,9 +3716,9 @@
 				<PersonID type="scalar" constraint="int" minOccurs="1" maxOccurs="1" default="" desc="" ></PersonID>
 			</OverrideSet>
 		</OverrideSets>
-		<OutputRequirements referenceType="container" referenceSubType="Queries,Operators" minOccurs="1" maxOccurs="1" desc="" >
+		<OutputRequirements type="container" referenceType="container" referenceSubType="Queries,Operators" minOccurs="1" maxOccurs="1" desc="" >
 			<!-- <Name type="" constraint="" minOccurs="1" maxOccurs="1" default="" desc="" ></Name> -->
-			<Queries minOccurs="1" maxOccurs="1" desc="" >
+			<Queries type="container" minOccurs="1" maxOccurs="1" desc="" >
 				<Query type="container" minOccurs="0" maxOccurs="" desc="">
 					<QueryID type="scalar" constraint="string" minOccurs="1" maxOccurs="1" default="" desc="" ></QueryID>
 					<Type type="const" constraint="string" minOccurs="1" maxOccurs="1" default="SIMVALUE" desc="" ></Type>

@@ -21,6 +21,8 @@ namespace PlanningTool
         bool _isExpanded;
         bool _isSelected;
 
+        private ObservableCollection<EngineObjectViewModel> _children = new ObservableCollection<EngineObjectViewModel>();
+
         #endregion // Data
 
         #region Constructors
@@ -29,6 +31,10 @@ namespace PlanningTool
         {
             _engineObject = engineObject;
             _parent = parent;
+            _children = new ObservableCollection<EngineObjectViewModel>(
+                    (from child in _engineObject.Children
+                     select new EngineObjectViewModel(child, this))
+                     .ToList<EngineObjectViewModel>()); 
         }
 
         //private EngineObjectViewModel(EngineObject engineObject)
@@ -54,14 +60,12 @@ namespace PlanningTool
 
         #region EngineObject Properties
 
-        public ReadOnlyCollection<EngineObjectViewModel> Children
+        public ObservableCollection<EngineObjectViewModel> Children
         {
             get
             {
-               return  new ReadOnlyCollection<EngineObjectViewModel>(
-                    (from child in _engineObject.Children
-                     select new EngineObjectViewModel(child, this))
-                     .ToList<EngineObjectViewModel>());                
+                return _children;
+
             }
         }
 
@@ -71,9 +75,47 @@ namespace PlanningTool
             {
                 return new ReadOnlyCollection<string>(
                    (from child in _engineObject.AddableObjects
-                    select child.Type)
+                    select (child.Type=="") ? child.NodeName : child.NodeName+"-"+child.Type)
                      .ToList<String>());
             }
+        }
+
+        public ReadOnlyCollection<String> AddableParameters
+        {
+            get
+            {
+                return new ReadOnlyCollection<string>(
+                   (from child in _engineObject.AddableParameters
+                    select child.Name)
+                     .ToList<String>());
+            }
+        }
+
+        public void RemoveObject()
+        {
+            _engineObject.Parent.RemoveObject(_engineObject);
+        }
+
+        public void AddObject(string ModelName, string type="")
+        {
+            if (type == "")
+            {
+                _engineObject.AddObject(ModelName);
+            }
+            else
+            {
+                _engineObject.AddObject(ModelName, type);
+            }
+            _children = new ObservableCollection<EngineObjectViewModel>(
+             (from child in _engineObject.Children
+              select new EngineObjectViewModel(child, this))
+              .ToList<EngineObjectViewModel>());
+        }
+        
+
+        public void AddParameter(string ParamName)
+        {
+            _engineObject.AddParameter(ParamName, "");
         }
 
         public string Name

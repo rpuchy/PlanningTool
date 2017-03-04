@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using Scripts;
 
 
 namespace PlanningTool
@@ -89,7 +90,7 @@ namespace PlanningTool
                 // Save document
                 string filename = dlg.FileName;
 
-               // FileOpsImplementation.CalibrationsTemplate(filename, CalibFileCollection.ToList());
+                Scripts.CalibrationTemplate.CreateTemplate(filename, CalibFileCollection.ToList());
 
             }
         }
@@ -98,36 +99,5 @@ namespace PlanningTool
 
 
 
-    public class CalibData : DependencyObject
-    {
-        public static readonly DependencyProperty CalibrationFileProperty =
-          DependencyProperty.Register("CalibrationFile", typeof(string),
-          typeof(CalibData), new UIPropertyMetadata(null));
-
-        public string CalibrationFile
-        {
-            get { return (string)GetValue(CalibrationFileProperty); }
-            set { SetValue(CalibrationFileProperty, value); }
-        }
-
-        public static readonly DependencyProperty CurrencyProperty =
-          DependencyProperty.Register("Currency", typeof(string),
-          typeof(CalibData), new UIPropertyMetadata(null));
-
-        public string Currency
-        {
-            get { return (string)GetValue(CurrencyProperty); }
-            set { SetValue(CurrencyProperty, value); }
-        }
-
-        public static readonly DependencyProperty AssumptionSetProperty =
-            DependencyProperty.Register("AssumptionSet", typeof(string),
-            typeof(CalibData), new UIPropertyMetadata(null));
-
-        public string AssumptionSet
-        {
-            get { return (string)GetValue(AssumptionSetProperty); }
-            set { SetValue(AssumptionSetProperty, value); }
-        }
-    }
+  
 }

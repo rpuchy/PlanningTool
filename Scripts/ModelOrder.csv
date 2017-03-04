@@ -1,0 +1,13 @@
+Order,Model
+1,Cash-AUD-Australia
+2,Equities-AUD-Australia
+3,Equities-AUD-International-LargeCap
+4,Equities-AUD:Hedged-International-LargeCap
+5,Equities-AUD-EmergingMarket
+6,FixedIncome-AUD-Australia-Government
+7,FixedIncome-AUD-Australia-Corporate
+8,FixedInterest-AUD:Hedged-International-Government
+9,Property-AUD-Australia-Listed
+10,Property-AUD-Australia-Direct
+11,Infrastructure-AUD-Australia
+12,Alternatives-AUD:Hedged-International-AllStrategies

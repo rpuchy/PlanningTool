@@ -271,7 +271,7 @@ namespace EngineAPI
             switch (ValToget)
             {
                 case Value.Name: return TryGetValue(ValueToString(ValToget), node, () => { return node.Name;});
-                case Value.Type: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.type].Value; });
+                case Value.Type: return TryGetValue(ValueToString(ValToget), node, () => { return (node.Attributes[Schema.type]==null)? "container" : node.Attributes[Schema.type].Value; });
                 case Value.Description: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.desc]?.Value; });
                 case Value.UniqueScopeTo: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.UniqueScopeTo]?.Value; });
                 case Value.bounds: return TryGetValue(ValueToString(ValToget), node, () => { return node.Attributes[Schema.bounds]?.Value; });

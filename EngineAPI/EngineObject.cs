@@ -384,19 +384,22 @@ namespace EngineAPI
             }
         }
         
-        public List<ParameterDetails> AddableParameters()
-        {   
-            XmlNode Params = _schema.GetObjectSchema(this);
-            List<ParameterDetails> temp = new List<ParameterDetails>();
-            var ParamList = Schema.GetParametersFromXml(Params,Schema.Classifier.Optional);  
-            foreach (var Param in ParamList)
+        public List<ParameterDetails> AddableParameters
+        {
+            get
             {
-                if (Parameters.Where(x => ((Parameter)x).Name == Param.Name).Count()<Param.maxOccurs)
+                XmlNode Params = _schema.GetObjectSchema(this);
+                List<ParameterDetails> temp = new List<ParameterDetails>();
+                var ParamList = Schema.GetParametersFromXml(Params, Schema.Classifier.Optional);
+                foreach (var Param in ParamList)
                 {
-                    temp.Add(Param);
+                    if (Parameters.Where(x => ((Parameter)x).Name == Param.Name).Count() < Param.maxOccurs)
+                    {
+                        temp.Add(Param);
+                    }
                 }
-            }
-            return temp;         
+                return temp;
+            }   
         }
 
         public void AddParameter(String pName,string pValue)
@@ -662,6 +665,39 @@ namespace EngineAPI
             }
             return _tempout;
         }
+
+
+        /// <summary>
+        /// Searches the XML and finds the first object whose Param child node is name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public EngineObject FindObjectbyParamValue(string name,string Param)
+        {
+            XmlNode temp = _innerXml.SelectSingleNode(".//*["+Param+"='" + name + "']");
+            return (temp != null) ? new EngineObject(temp, _schema) : null;
+        }
+
+        /// <summary>
+        /// Seacrhes the XML and find the objects whose Param child node is name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public List<EngineObject> FindObjectsbyParamValue(string name,string Param)
+        {
+            XmlNodeList temp = _innerXml.SelectNodes(".//*["+Param+"='" + name + "']");
+            List<EngineObject> _tempout = new List<EngineObject>();
+            foreach (XmlNode node in temp)
+            {
+                _tempout.Add(new EngineObject(node, _schema));
+            }
+            return _tempout;
+        }
+
+
+
+
+
 
         public static string GetAlternate(string input)
         {

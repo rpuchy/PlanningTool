@@ -30,6 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -38,8 +40,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalibrationTemplate.cs" />
     <Compile Include="CreateCalibrationTemplate.cs" />
     <Compile Include="Deterministic.cs" />
     <Compile Include="TestingData.cs" />
@@ -58,7 +62,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(ProjectDir)UnitTestHarness.exe" "$(TargetDir)UnitTestHarness.exe"
-copy /Y "$(ProjectDir)DiffMatch*.dll " "$(TargetDir)*"</PostBuildEvent>
+copy /Y "$(ProjectDir)DiffMatch*.dll " "$(TargetDir)*"
+copy /Y "$(ProjectDir)ModelOrder.csv " "$(TargetDir)ModelOrder.csv"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

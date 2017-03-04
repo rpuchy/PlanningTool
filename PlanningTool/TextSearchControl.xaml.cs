@@ -20,7 +20,7 @@ namespace PlanningTool
         public TextSearchControl()
         {
             InitializeComponent();
-            
+
             //// Get raw family tree data from a database.
             //Simulation rootObject = EngineObjectTree;
 
@@ -29,7 +29,8 @@ namespace PlanningTool
             //_tree = new TreeViewModel(rootObject);
 
             //// Let the UI bind to the view-model.
-            //base.DataContext = _tree;            
+            //base.DataContext = _tree;       
+     
         }
 
         public void SetData(TreeViewModel data)

@@ -67,17 +67,17 @@ namespace PlanningTool
         
         }
         
-        public class MenuItem
-        {
-            public MenuItem()
-            {
-                this.Items = new ObservableCollection<MenuItem>();
-            }
+        //public class MenuItem
+        //{
+        //    public MenuItem()
+        //    {
+        //        this.Items = new ObservableCollection<MenuItem>();
+        //    }
 
-            public string Title { get; set; }
+        //    public string Title { get; set; }
 
-            public ObservableCollection<MenuItem> Items { get; set; }
-        }
+        //    public ObservableCollection<MenuItem> Items { get; set; }
+        //}
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -108,27 +108,85 @@ namespace PlanningTool
             listView.DataContext = this;            
         }
 
-        void InterfaceTreeViewComputers_SelectionChange(Object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void upDateParameters(EngineObjectViewModel _obj)
         {
             _parameters.Clear();
-            
-            foreach (var param in ((EngineObjectViewModel)e.NewValue).Parameters)
+
+            foreach (var param in _obj.Parameters)
             {
                 var p = new Parameter() { Name = param.Name, Value = param.Value };
                 _parameters.Add(p);
             }
+        }
+
+        void InterfaceTreeViewComputers_SelectionChange(Object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            upDateParameters((EngineObjectViewModel)e.NewValue);
             
             AddressBox.Text = ((EngineObjectViewModel) e.NewValue).Fullyqualifiedname;
             Selecteditem = (EngineObjectViewModel)e.NewValue;
 
+            if (TreeviewControl.EngineObjectViewTree.ContextMenu != null)
+            {
+                TreeviewControl.EngineObjectViewTree.ContextMenu.Items.Clear();
+            }
+
+            ContextMenu context = new ContextMenu();
+            MenuItem Remove = new MenuItem();
+            Remove.Header = "Remove";
+            Remove.Click += delegate { Selecteditem.RemoveObject(); TreeviewControl.EngineObjectViewTree.Items.Refresh(); };
+            context.Items.Add(Remove);
+            MenuItem Add = new MenuItem();
+            Add.Header = "Add";
+            foreach(string _addobj in Selecteditem.AddableObjects)
+            {
+                var mn = new MenuItem();
+                mn.Header = _addobj;
+                mn.Click += delegate { Selecteditem.AddObject(_addobj.Split('-')[0],(_addobj.Split('-').Count()>1)? _addobj.Split('-')[1]:""); TreeviewControl.EngineObjectViewTree.Items.Refresh(); };
+                Add.Items.Add(mn);
+            }
+            context.Items.Add(Add);
+            TreeviewControl.EngineObjectViewTree.ContextMenu = context;
+
+
+            if (listView.ContextMenu != null)
+            {
+                listView.ContextMenu.Items.Clear();
+            }
+
+            ContextMenu LV_context = new ContextMenu();
+            MenuItem LV_Remove = new MenuItem();
+            LV_Remove.Header = "Remove";
+            LV_Remove.Click += delegate { MessageBox.Show("Remove"); };
+            LV_context.Items.Add(LV_Remove);
+            MenuItem LV_Add = new MenuItem();
+            LV_Add.Header = "Add";
+            foreach (string _addobj in Selecteditem.AddableParameters)
+            {
+                var mn = new MenuItem();
+                mn.Header = _addobj;
+                mn.Click += delegate { Selecteditem.AddParameter(_addobj); upDateParameters(Selecteditem); };
+                LV_Add.Items.Add(mn);
+            }
+            LV_context.Items.Add(LV_Add);
+            listView.ContextMenu = LV_context;
+
+
+
+
+
+
+
         }
+
+
 
         private void Param_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var param = (Parameter)sender;
             Selecteditem.Parameters[param.Name].Value = param.Value;
         }
-
+    
         private void listViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListViewItem item = sender as ListViewItem;

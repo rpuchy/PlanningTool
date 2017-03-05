@@ -336,7 +336,29 @@ namespace EngineAPI
             }
         }
 
+        public XmlNode CreateEmptySim(XmlDocument doc)
+        {
+            var simulation = _innerxml.SelectSingleNode("//Simulation");
+            var cleanSim = doc.ImportNode(simulation, true);
+            foreach (XmlNode node in cleanSim.SelectNodes("//*"))
+            {
+                if (int.Parse(Getvalue(node,Value.minOccurs).ToString())==0)
+                {
+                    node.ParentNode.RemoveChild(node);
+                }
 
+            }
+            cleanSim.Attributes.RemoveAll();
+            foreach (XmlElement el in cleanSim.SelectNodes(".//*"))
+            {
+                if (el.Attributes[Schema.defaultValue] != null)
+                {
+                    el.InnerText = el.Attributes[Schema.defaultValue].Value;
+                }
+                el.Attributes.RemoveAll();
+            }
+            return cleanSim;
+        }
 
 
 

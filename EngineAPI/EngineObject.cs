@@ -236,6 +236,85 @@ namespace EngineAPI
             return _innerXml.SelectNodes(xPath);
         }
 
+
+
+        public bool validate(out string Errors)
+        {
+            Errors = "";
+            XmlNode Params = _schema.GetObjectSchema(this);
+            var ObjectList = Schema.GetObjectsFromXml(Params, Schema.Classifier.All);
+            var ParamList = Schema.GetParametersFromXml(Params, Schema.Classifier.All);
+            bool result = true;
+            //first go through which parameters are in the sim file and evaluate them against the schema
+            foreach (var param in Parameters)
+            {
+                try
+                {
+                    var Paramdet = ParamList.Single(x => x.Name == param.Name || x.Name == GetAlternate(param.Name));
+                    Paramdet.evalute(param.Value.ToString());
+                }
+                catch(Exception e)
+                {
+                    Errors = Errors + param.Name + "(parameter) is not defined in the Schema \n";
+                    continue;
+                }            
+            }
+
+            //Next go through the parameters that are required but not in the sim and create an error message
+            foreach (var param in ParamList)
+            {
+                int count = Parameters.Where(x => x.Name == param.Name || x.Name == GetAlternate(param.Name)).Count();
+                if (param.minOccurs>count)
+                {
+                    result = false;
+                    Errors = Errors + param.Name + "(parameter) is not correctly defined, there are insufficient parameters of this tag declared \n";
+                }
+                if (param.maxOccurs<count)
+                {
+                    result = false;
+                    Errors = Errors + param.Name + "(parameter) is not correctly defined, there are too many parameters of this tag declared \n";
+                }
+            }
+
+            //now go through the children objects that exist and call validate on them
+            foreach(var child in Children)
+            {
+                string temp = "";
+                bool tres =  child.validate(out temp);
+                result = (!tres) ? false : result;
+               
+                Errors = Errors + "\n" + temp;
+                try
+                {
+                    var objectdet = ObjectList.Single(x => x.NodeName == child.Name || x.NodeName == GetAlternate(child.Name));
+
+                }catch(Exception e)
+                {
+                    Errors = Errors + child.Name + "(object) is not defined in the Schema \n";
+                }
+            }
+
+            //now go through the schema and check all objects that are required exist
+            foreach(var obj in ObjectList)
+            {
+                int count = Children.Where(x => x.Name == obj.NodeName || x.Name == GetAlternate(obj.NodeName)).Count();
+                if (obj.minOccurs > count)
+                {
+                    result = false;
+                    Errors = Errors + obj.NodeName + "(Object) is not correctly defined, there are insufficient objects of this tag declared \n";
+                }
+                if (obj.maxOccurs < count)
+                {
+                    result = false;
+                    Errors = Errors + obj.NodeName + "(Object) is not correctly defined, there are too many objects of this tag declared \n";
+                }
+            }
+
+            
+
+            return result;
+        }
+
         /// <summary>
         /// Search through the Schema and return a list of addable submodels
         /// </summary>

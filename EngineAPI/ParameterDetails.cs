@@ -56,6 +56,12 @@ namespace EngineAPI
             return t;
         }
 
+        public bool evalute(string val)
+        {
+
+            return true;
+        }
+
 
 
     }

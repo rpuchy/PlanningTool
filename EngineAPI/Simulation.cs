@@ -29,10 +29,23 @@ namespace EngineAPI
             }
             try
             {
-                using (FileStream fileReader = new FileStream(filename, FileMode.Open))
-                using (XmlReader reader = XmlReader.Create(fileReader))
-                {                    
-                    _xmlDoc.Load(reader);                    
+                if (filename != "")
+                {
+                    using (FileStream fileReader = new FileStream(filename, FileMode.Open))
+                    using (XmlReader reader = XmlReader.Create(fileReader))
+                    {
+                        _xmlDoc.Load(reader);
+                    }
+                }
+                else
+                {
+                    XmlDeclaration xmlDeclaration = _xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
+                    XmlElement root = _xmlDoc.DocumentElement;
+                    _xmlDoc.InsertBefore(xmlDeclaration, root);
+
+                    XmlElement simnode = _xmlDoc.CreateElement(string.Empty, "Simulation", string.Empty);
+                    _xmlDoc.AppendChild(simnode);
+                    
                 }
             }
             catch (Exception ex)
@@ -175,6 +188,14 @@ namespace EngineAPI
             _xmlDoc.Save(filename);
             _filename = filename;
         }
+
+        public void New()
+        {
+            //Search through the schema from the simulation node and add all object/parameters that have a minOccurs of 1
+            _xmlDoc.RemoveAll();
+            _xmlDoc.AppendChild(_schema.CreateEmptySim(_xmlDoc));
+        }
+
 
         public void UpdateSimulation()
         {

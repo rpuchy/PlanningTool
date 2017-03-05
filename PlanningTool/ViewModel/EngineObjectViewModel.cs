@@ -91,6 +91,11 @@ namespace PlanningTool
             }
         }
 
+        public bool validate(out string results)
+        {
+         return _engineObject.validate(out results);
+        }
+
         public void RemoveObject()
         {
             _engineObject.Parent.RemoveObject(_engineObject);
@@ -98,18 +103,19 @@ namespace PlanningTool
 
         public void AddObject(string ModelName, string type="")
         {
+            EngineObject n_obj;
             if (type == "")
             {
-                _engineObject.AddObject(ModelName);
+                n_obj=_engineObject.AddObject(ModelName);
             }
             else
             {
-                _engineObject.AddObject(ModelName, type);
+                n_obj=_engineObject.AddObject(ModelName, type);
             }
-            _children = new ObservableCollection<EngineObjectViewModel>(
-             (from child in _engineObject.Children
-              select new EngineObjectViewModel(child, this))
-              .ToList<EngineObjectViewModel>());
+            var e_obj = new EngineObjectViewModel(n_obj, this);
+            _children.Add(e_obj);
+            this.IsExpanded = true;
+            e_obj.IsSelected = true;
         }
         
 
@@ -120,7 +126,7 @@ namespace PlanningTool
 
         public string Name
         {
-            get { return (_engineObject.ObjectName==null) ? _engineObject.Name:_engineObject.ObjectName; }
+            get { return (_engineObject.ObjectName=="") ? _engineObject.Name:_engineObject.ObjectName; }
         }
 
         public string Fullyqualifiedname

@@ -81,7 +81,13 @@ namespace PlanningTool
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            Sim = new Simulation("", System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @".\EngineInputTemplateTypeDefines.xml");
+            Sim.New();
+            VisualData = new TreeViewModel(Sim);
+            TreeviewControl.SetData(VisualData);
 
+            base.DataContext = TreeviewControl;
+            listView.DataContext = this;
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
@@ -136,6 +142,14 @@ namespace PlanningTool
             Remove.Header = "Remove";
             Remove.Click += delegate { Selecteditem.RemoveObject(); TreeviewControl.EngineObjectViewTree.Items.Refresh(); };
             context.Items.Add(Remove);
+
+            MenuItem Validate = new MenuItem();
+            Validate.Header = "Validate";
+            Validate.Click += delegate { string msg;  Selecteditem.validate(out msg); MessageBox.Show(msg); TreeviewControl.EngineObjectViewTree.Items.Refresh(); };
+            context.Items.Add(Validate);
+
+
+
             MenuItem Add = new MenuItem();
             Add.Header = "Add";
             foreach(string _addobj in Selecteditem.AddableObjects)

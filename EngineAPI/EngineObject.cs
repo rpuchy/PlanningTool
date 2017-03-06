@@ -28,6 +28,7 @@ namespace EngineAPI
             _innerXml = _xmlNode;
             _schema = new Schema(_xmlSchema);
             SetFullyQualifiedName();
+            SetFullyQualifiedObjectName();
         }
 
         public EngineObject(XmlNode _xmlNode, Schema Schema)
@@ -35,6 +36,7 @@ namespace EngineAPI
             _innerXml = _xmlNode;
             _schema = Schema;
             SetFullyQualifiedName();
+            SetFullyQualifiedObjectName();
         }
 
         /// <summary>
@@ -64,6 +66,44 @@ namespace EngineAPI
                 currentNode = currentNode.ParentNode;
             }
             FullyQualifiedName = parent+_innerXml.Name;               
+        }
+
+        protected void SetFullyQualifiedObjectName()
+        {
+            //Search through the parent hirearchy and set the fully qualified name
+            string parent = "";
+            XmlNode currentNode = _innerXml;
+            while (currentNode.ParentNode != null)
+            {
+                if (currentNode.ParentNode.Name != "#document")
+                {
+                    XmlNode oName = currentNode.ParentNode.SelectSingleNode("Name|name|Params/Name|params/name");
+                    string pname = "";
+                    if (oName == null)
+                    {
+                        pname = currentNode.ParentNode.Name;
+                        if (!pname.Any(x => char.IsUpper(x)))
+                        {
+                            pname = char.ToUpper(pname[0]) + pname.Substring(1);
+                        }
+                    }
+                    else
+                    {
+                        pname = oName.InnerText;
+                    }
+                    parent = pname + "." + parent;
+                }
+                currentNode = currentNode.ParentNode;
+            }
+
+            if (this.ObjectName != null)
+            {
+                FullyQualifiedObjectName = parent + ObjectName;
+            }
+            else
+            {
+                FullyQualifiedObjectName = parent + _innerXml.Name;
+            }
         }
 
         /// <summary>
@@ -220,11 +260,13 @@ namespace EngineAPI
         /// <summary>
         /// The name of the object if it exists
         /// </summary>
-        public string ObjectName => _innerXml.SelectSingleNode("./Name|./Params/Name")?.InnerText;
+        public string ObjectName => ((this.Name)=="Params")?"Params":_innerXml.SelectSingleNode("Name|Params/Name|name|params/name")?.InnerText;
 
         public string ObjectType => _innerXml.SelectSingleNode("./Type|./Params/Type|./Class")?.InnerText;
 
         public string FullyQualifiedName { get; set; }
+
+        public string FullyQualifiedObjectName { get; set; }
 
         public XmlNode SelectSingleNode(string xPath)
         {
@@ -545,7 +587,8 @@ namespace EngineAPI
         {
             EngineObject Queries = new EngineObject(_innerXml.SelectSingleNode("//Queries"), _schema);
             var Query = Queries.AddObject("Query");
-            Query.Parameters["QueryID"].Value = 'q' + this.FullyQualifiedName.Replace('.', '|') + '|' + String.Join("|",ValueTypes.ToArray());
+            Query.Parameters["QueryID"].Value = 'q' + this.FullyQualifiedObjectName.Replace(" ","").Replace('.', '|')+'|' + String.Join("|",ValueTypes.ToArray());
+            //TODO: need to validate this name is unque
             if (this.Name == "Model")
             {
                 var QueryFilter = Query.FindObjectbyNodeName("QueryFilter");
@@ -568,13 +611,13 @@ namespace EngineAPI
                 QueryFilter2Criteria.Parameters["Value"].Value = this.Parent.Parent.Parameters["Name"].Value;
 
             }
-            var Values = Query.FindObjectbyNodeName("Values");
-            Values.Parameters["Value"].Value = ValueTypes[0];
+            var Values = Query.FindObjectbyNodeName("ValueTypes");
+            Values.Parameters["ValueType"].Value = ValueTypes[0];
             if (ValueTypes.Count>1)
             {
                 for (int i=1;i<ValueTypes.Count;i++)
                 {
-                    Values.AddParameter("Value",ValueTypes[i]);
+                    Values.AddParameter("ValueType",ValueTypes[i]);
                 }
             }
             return Query;
@@ -585,12 +628,14 @@ namespace EngineAPI
             EngineObject Operators = new EngineObject(_innerXml.SelectSingleNode("//Operators"), _schema);
 
             var Operator = Operators.AddObject("Operator");
-            Operator.Parameters["OperatorID"].Value = 'o' + this.FullyQualifiedName.Replace('.', '|') + '|' + ValueType;
+            Operator.Parameters["OperatorID"].Value = 'o' + this.FullyQualifiedObjectName.Replace(" ", "").Replace('.', '|')+ '|' + ValueType;
+            //TODO: need to validate this name is unque
             var OperationApplyTo = Operator.FindObjectbyNodeName("OperationApplyTo");
             OperationApplyTo.Parameters["QueryID"].Value = Query.Parameters["QueryID"].Value;
             OperationApplyTo.Parameters["Value"].Value = ValueType;
             OperationApplyTo.Parameters["TimeStepStart"].Value = "0";
             OperationApplyTo.Parameters["TimeStepEnd"].Value = "100";
+            OperationApplyTo.Parameters["InflationAdjusted"].Value = "false";
             return Operator;
         }
 

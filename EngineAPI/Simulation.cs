@@ -112,6 +112,11 @@ namespace EngineAPI
 
         public void Run(string outputfile)
         {
+            if (!Directory.Exists(Path.GetDirectoryName(outputfile)))
+            {
+                outputfile = Path.GetDirectoryName(_filename) + @"\" + Path.GetFileName(outputfile);
+            }
+
             string outpath = System.IO.Path.GetTempPath() + "\\scendata.xml";
 
             this.SilentSaveAs(outpath);

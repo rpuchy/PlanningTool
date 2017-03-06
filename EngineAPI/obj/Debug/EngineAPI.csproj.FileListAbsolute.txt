@@ -7,4 +7,3 @@ C:\Git\PlanningTool\EngineAPI\bin\Debug\EngineAPI.dll
 C:\Git\PlanningTool\EngineAPI\bin\Debug\EngineAPI.pdb
 C:\Git\PlanningTool\EngineAPI\obj\Debug\EngineAPI.dll
 C:\Git\PlanningTool\EngineAPI\obj\Debug\EngineAPI.pdb
-C:\Git\PlanningTool\EngineAPI\obj\Debug\EngineAPI.csprojResolveAssemblyReference.cache

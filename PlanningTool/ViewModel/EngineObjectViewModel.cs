@@ -37,24 +37,6 @@ namespace PlanningTool
                      .ToList<EngineObjectViewModel>()); 
         }
 
-        //private EngineObjectViewModel(EngineObject engineObject)
-        //{
-        //    _engineObject = engineObject;
-        //    _parameters = engineObject.Parameters;
-        //    if (parent == null)
-        //    {
-        //        _fullyqualifiedname = _engineObject.Name;
-        //    }
-        //    else
-        //    {
-        //        _fullyqualifiedname = parent.Fullyqualifiedname + '.' + _engineObject.Name;
-        //    }
-            
-        //    _children = new ReadOnlyCollection<EngineObjectViewModel>(
-        //            (from child in _engineObject.Children
-        //             select new EngineObjectViewModel(child, this))
-        //             .ToList<EngineObjectViewModel>());
-        //}
 
         #endregion // Constructors
 
@@ -126,7 +108,7 @@ namespace PlanningTool
 
         public string Name
         {
-            get { return (_engineObject.ObjectName=="") ? _engineObject.Name:_engineObject.ObjectName; }
+            get { return (_engineObject.ObjectName==null) ? _engineObject.Name:_engineObject.ObjectName; }
         }
 
         public string Fullyqualifiedname

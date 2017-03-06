@@ -21,7 +21,10 @@ namespace Scripts
             List<int> Scenario_list = new List<int>();
             Scenario_list.Add(1);
 
-            sim.AddTransactionLog(Path.GetDirectoryName(out_filename)+"\transactionlog.csv",Scenario_list);
+            sim.AddTransactionLog(Path.GetDirectoryName(out_filename)+@"\transactionlog.csv",Scenario_list);
+
+            sim.FindObjectbyNodeName("Params").Parameters["Scenarios"].Value = 1;
+            sim.FindObjectbyNodeName("Params").Parameters["InflationAdjusted"].Value = "false";
 
             var Models = sim.FindObjectsbyNodeName("Model");
             var Products = sim.FindObjectbyNodeName("TaxWrappers").FindObjectsbyNodeName("Product");
@@ -31,6 +34,7 @@ namespace Scripts
             {
                 Model.AddOutputs(Model.AddableValueTypes(), "SCENARIOALL");
             }
+           
             foreach (var Product in Products)
             {
                 Product.AddOutputs(Product.AddableValueTypes(), "SCENARIOALL");
@@ -53,6 +57,8 @@ namespace Scripts
             }
 
             sim.SaveAs(out_filename);
+
+            sim.Run();
 
         }
 
